@@ -1,0 +1,43 @@
+<html lang="en">
+	<head>
+		<title> Login </title>
+		<script type="text/javascript" src="../js/jquery/jquery.min.js"></script>
+		<link rel="stylesheet" href="../css/style.css">
+		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap-theme.min.css">
+		<script src="../vendor/bootstrap/js/bootstrap.js"></script>
+		<script src="../js/login.js"></script>>
+	</head>
+	<body>
+		<!--
+		you can substitue the span of reauth email for a input with the email and
+		include the remember me checkbox
+		-->
+		<div class="container">
+			<div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"> 
+				<div class="card card-container">
+				
+				<!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
+					<img id="profile-img" class="profile-img-card" src="../vendor/images/default-user.png" />
+					<p id="profile-name" class="profile-name-card"></p>
+					<form class="form-signin">
+						<!-- <span id="reauth-email" class="reauth-email"></span> -->
+						<div class="input-group">
+	                        <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+							<input type="text" id="inputhDomain" class="form-control" placeholder="Domain Name" required autofocus>
+						</div>
+						<div class="input-group">
+	                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+	                        <input id="user" type="text" class="form-control" name="user" value="" placeholder="User">                                        
+	                    </div>
+	                    <div class="input-group">
+	                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+							<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+						</div>
+						<button class="btn btn-lg btn-primary btn-block btn-signin" id="signin" type="submit">Sign in</button>
+					</form><!-- /form -->
+				</div>
+			</div><!-- /card-container -->
+		</div><!-- /container -->
+	</body>
+</html>

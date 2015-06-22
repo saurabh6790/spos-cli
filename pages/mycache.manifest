@@ -1,11 +1,11 @@
 CACHE MANIFEST
-../css/style.css
-../vendor/bootstrap/css/bootstrap.min.css
-../vendor/bootstrap/css/bootstrap-theme.min.css
-../vendor/bootstrap/js/bootstrap.js
-../js/login.js
-../js/jquery/jquery.min.js
+../../css/style.css
+../../vendor/bootstrap/css/bootstrap.min.css
+../../vendor/bootstrap/css/bootstrap-theme.min.css
+../../vendor/bootstrap/js/bootstrap.js
+../../js/login.js
+../../js/jquery/jquery.min.js
 ../pages/login.html
 ../pages/pos.html
-../vendor/images/default-user.png
-../vendor/images/brand.png
+../../vendor/images/default-user.png
+../../vendor/images/brand.png

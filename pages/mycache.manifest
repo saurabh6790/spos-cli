@@ -7,3 +7,5 @@ CACHE MANIFEST
 ../js/jquery/jquery.min.js
 ../pages/login.html
 ../pages/pos.html
+../vendor/images/default-user.png
+../vendor/images/brand.png

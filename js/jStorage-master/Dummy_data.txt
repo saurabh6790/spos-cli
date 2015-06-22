@@ -1,0 +1,137 @@
+ ## For Customer ##
+
+ 1. {
+ 		"customer" :
+ 		[
+ 			{
+				"customer_id" : "CUST-0001",
+				"customer_name" : "Ram" 		
+ 			},
+ 			{
+ 				"customer_id" : "CUST-0002",
+				"customer_name" : "Suyash" 
+ 			},
+ 			{
+ 				"customer_id" : "CUST-0003",
+				"customer_name" : "Nilesh" 
+ 			},
+ 			{
+ 				"customer_id" : "CUST-0004",
+				"customer_name" : "Radhika" 
+ 			},
+ 			{
+ 				"customer_id" : "CUST-0005",
+				"customer_name" : "Sai" 
+ 			},
+ 			{
+ 				"customer_id" : "CUST-0006",
+				"customer_name" : "Jaydeep" 
+ 			}
+
+
+ 		]
+
+
+	}
+
+
+## For Item Group  ##
+
+
+2.
+
+	{
+		"item_group" : ['Product','Raw Material','Consumable','Electrical','Finished Goods']
+	}
+
+
+##  For Item  ##
+
+
+3.
+
+	
+	{
+		"item" : 
+		[
+			{
+				"item_code" : "Pant",
+				"item_name"	: "pant123",
+				"cost" : 50,
+				"group" : "Product"
+			},
+			{
+				"item_code" : "Trouser",
+				"item_name"	: "trouser234",
+				"cost" : 70,
+				"group" : "Finished Goods"
+			},
+			{
+				"item_code" : "Book",
+				"item_name"	: "Game of Thrones",
+				"cost" : 250,
+				"group" : "Product"
+			},
+			{
+				"item_code" : "Shirt",
+				"item_name"	: "white collared shirt",
+				"cost" : 120,
+				"group" : "Finished Goods"
+			},
+			{
+				"item_code" : "Wire",
+				"item_name"	: "wire555",
+				"cost" : 54,
+				"group" : "Electrical"
+			},
+			{
+				"item_code" : "Fabric",
+				"item_name"	: "fabric877",
+				"cost" : 85,
+				"group" : "Raw Material"
+			},
+			{
+				"item_code" : "Jam",
+				"item_name"	: "Kissan Jam",
+				"cost" : 30,
+				"group" : "Consumable"
+			}
+		]
+	}
+
+
+
+##  For Vendor  ##
+
+4.
+
+	{
+		"vendor" : 
+		[
+			{
+				"vendor_id" : "John Jackson",
+				"item_list" : ["Pant","Trouser","Shirt"]
+			},
+			{
+				"vendor_id" : "Jerik",
+				"item_list" : ["Book","Trouser"]
+			},
+			{
+				"vendor_id" : "Kareena",
+				"item_list" : ["Fabric","Wire"]
+			},
+			{
+				"vendor_id" : "Laggan",
+				"item_list" : ["Shirt","Trouser","Fabric"]
+			},
+			{
+				"vendor_id" : "Mario",
+				"item_list" : ["Shirt","Wire","Jam"]
+			},
+			{
+				"vendor_id" : "Mike",
+				"item_list" : ["Book","Fabric","Pant"]
+			}
+
+		]
+	}

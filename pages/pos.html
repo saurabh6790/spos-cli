@@ -1,18 +1,20 @@
+<!DOCTYPE html>
+<!-- <html lang="en" manifest="mycache.manifest" type="text/cache-manifest"> -->
 <html>
 	<head>
 		<title>SPOS</title>
 		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="../css/pos.css">
+		<link  rel="stylesheet" href="../js/bootstrap-combobox-master/css/bootstrap-combobox.css"></link>
+
 		<script type="text/javascript" src="../js/jquery/jquery.min.js"></script>	
 		<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>	
 		<script src="../js/jStorage-master/jstorage.js"></script>
 		<script src="../js/pos.js"></script>
-		<link  rel="stylesheet" href="../js/bootstrap-combobox-master/css/bootstrap-combobox.css"></link>
 		<script src="../js/bootstrap-combobox-master/js/bootstrap-combobox.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
-
 	<body>
 		<nav  class="navbar navbar-default" role="navigation">
 			<div class="container">	
@@ -24,16 +26,16 @@
 				<div class="collapse navbar-collapse">
 				
 				<ul class="nav navbar-nav">
-					<li><a><img alt="Brand" src="../images/brand.png" style="width:60px;height:35px"></a> </li>
+					<li><a><img alt="Brand" src="../vendor/images/brand.png" style="width:60px;height:35px"></a> </li>
 					<li> <a href="#" title="Home Page">Home</a> </li>	
 					<li> <a href="#" title="Company Name">Company</a>  </li>
 				</ul>	
 				
 				<ul class="nav navabar-nav navbar-right">
 					<li class="dropdown">	
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">USER NAME <b class="caret"></b></a>	
+					<a href="#" class="dropdown-toggle user" data-toggle="dropdown"> <b class="caret"></b></a>	
 						<ul class="dropdown-menu">
-							<li> <a href="#">Sign Out</a> </li>
+							<li> <a href="#" id="sign_out">Sign Out</a> </li>
 						</ul>	
 					</li>	
 				</ul><!--/ navbar-right -->		
@@ -41,7 +43,6 @@
 				</div><!--/collpase navbar -->	
 			</div><!--/container -->	
 		</nav>
-		
 		<div class="container margin">
 			<div class="row">
 			<div class="col-md-4 col-sm-4 col-xs-4">
@@ -65,13 +66,6 @@
 				</select>
 			</div>			
 			</div>
-		</div>	
-
-
-
-
-	
+		</div>		
 	</body>	
-
-
 </html>

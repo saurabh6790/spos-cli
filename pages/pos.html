@@ -1,0 +1,77 @@
+<html>
+	<head>
+		<title>SPOS</title>
+		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="../css/pos.css">
+		<script type="text/javascript" src="../js/jquery/jquery.min.js"></script>	
+		<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>	
+		<script src="../js/jStorage-master/jstorage.js"></script>
+		<script src="../js/pos.js"></script>
+		<link  rel="stylesheet" href="../js/bootstrap-combobox-master/css/bootstrap-combobox.css"></link>
+		<script src="../js/bootstrap-combobox-master/js/bootstrap-combobox.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+
+	<body>
+		<nav  class="navbar navbar-default" role="navigation">
+			<div class="container">	
+				<div class="navbar-header">
+
+					<a class="navbar-brand" href="#" title="Standalone Point of Sale System">SPOS</a>
+
+				</div><!--/navbar-header -->
+				<div class="collapse navbar-collapse">
+				
+				<ul class="nav navbar-nav">
+					<li><a><img alt="Brand" src="../images/brand.png" style="width:60px;height:35px"></a> </li>
+					<li> <a href="#" title="Home Page">Home</a> </li>	
+					<li> <a href="#" title="Company Name">Company</a>  </li>
+				</ul>	
+				
+				<ul class="nav navabar-nav navbar-right">
+					<li class="dropdown">	
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">USER NAME <b class="caret"></b></a>	
+						<ul class="dropdown-menu">
+							<li> <a href="#">Sign Out</a> </li>
+						</ul>	
+					</li>	
+				</ul><!--/ navbar-right -->		
+
+				</div><!--/collpase navbar -->	
+			</div><!--/container -->	
+		</nav>
+		
+		<div class="container margin">
+			<div class="row">
+			<div class="col-md-4 col-sm-4 col-xs-4">
+				<select class="combobox" data-placeholder="Search Customer" id="customer" name="customer">
+				  <option></option>
+				</select>
+			</div>
+			<div class="col-md-2 col-sm-2 col-xs-2">
+				<select class="combobox" data-placeholder="Search Vendor" id="vendor" name="vendor">
+				  <option></option>
+				</select>
+			</div>	
+			<div class="col-md-3 col-sm-3 col-xs-3">
+				<select class="combobox" data-placeholder="Search Sub-Category" id="sub_category" name="sub_category">
+				  <option></option>
+				</select>
+			</div>
+			<div class="col-md-3 col-sm-3 col-xs-3">
+				<select class="combobox" data-placeholder="Search Item" id="item" name ="item">
+				  <option></option>
+				</select>
+			</div>			
+			</div>
+		</div>	
+
+
+
+
+	
+	</body>	
+
+
+</html>

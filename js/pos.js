@@ -30,6 +30,7 @@ var image_object = {
 }
 
 $(document).ready(function(){
+
     
     $.each($.jStorage.get("customer"),function(index,value){
     	$("body").find('select[id=customer]').append("<option>{0}</option>".replace("{0}",value.customer_id))

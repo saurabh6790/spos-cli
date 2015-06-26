@@ -31,6 +31,7 @@
     this.$target = this.$container.find('input[type=hidden]');
     this.$button = this.$container.find('.dropdown-toggle');
     this.$menu = $(this.options.menu).appendTo('body');
+    $(this.$menu).attr("id",$(element).attr("id"))
     this.template = this.options.template || this.template
     this.matcher = this.options.matcher || this.matcher;
     this.sorter = this.options.sorter || this.sorter;
@@ -40,9 +41,13 @@
     this.refresh();
     this.transferAttributes();
     this.listen();
+    // this.render = this.render()
+    // this.show = this.show()
+
   };
 
-  Combobox.prototype = {
+
+  Combobox.prototype =  {
 
     constructor: Combobox
 
@@ -83,6 +88,7 @@
         if (option.prop('selected')) {
           selected = option.text();
           selectedValue = option.val();
+
         }
       })
       this.map = map;
@@ -170,7 +176,6 @@
       if (!items.length) {
         return this.shown ? this.hide() : this;
       }
-
       return this.render(items.slice(0, this.options.items)).show();
     }
 
@@ -178,7 +183,7 @@
       if (this.options.bsVersion == '2') {
         return '<div class="combobox-container"><input type="hidden" /> <div class="input-append"> <input type="text"  autocomplete="off" /> <span class="add-on dropdown-toggle" data-dropdown="dropdown"> <span class="glyphicon glyphicon-search"/> <i class="icon-remove"/> </span> </div> </div>'
       } else {
-        return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text"  autocomplete="off" /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span class="glyphicon glyphicon-search" /> <span class="glyphicon glyphicon-remove" /> </span> </div> </div>'
+        return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text"  autocomplete="off"   /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span class="glyphicon glyphicon-search"  /> <span class="glyphicon glyphicon-remove" id="remove"/> </span> </div> </div>'
       }
     }
 
@@ -212,10 +217,8 @@
       var that = this;
       var result= ''
       var result_attr = ''
-
       items = $(items).map(function (i, item) {
         i = $(that.options.item).attr('data-value', item);
-
       if(that.$element[0].name == 'customer'){
         result = $.grep($.jStorage.get("customer"), function(e){ return e.customer_id == item; });
         i.find('a').html(that.highlighter(item)+"</br>"+that.highlighter(result[0].customer_name));
@@ -258,12 +261,14 @@
     }
 
   , toggle: function () {
-    if (!this.disabled) {
+    if (!this.disabled) { 
       if (this.$container.hasClass('combobox-selected')) {
+        $(this.$button).find("span:first").attr("check","deactive")
         this.clearTarget();
         this.triggerChange();
         this.clearElement();
       } else {
+         $(this.$button).find("span:first").attr("check","active")
         if (this.shown) {
           this.hide();
         } else {
@@ -431,6 +436,7 @@
 
   /* COMBOBOX PLUGIN DEFINITION
    * =========================== */
+   var parent = '';
   $.fn.combobox = function ( option ) {
     return this.each(function () {
       var $this = $(this)
@@ -441,12 +447,29 @@
     });
   };
 
+  $.fn.my_combobox = function (item_list) {
+     return this.each(function () {  
+          var $this = $(this)
+        , data = $this.data('combobox')
+        if(data){
+          // data.source = this.parse();
+          data.source = item_list
+          data.options.items = data.source.length;
+
+      }
+   })
+  };
+
   $.fn.combobox.defaults = {
     bsVersion: '3'
-  , menu: '<ul class="typeahead typeahead-long dropdown-menu" id="custom_ul_id"></ul>'
+  , menu: '<ul class="typeahead typeahead-long dropdown-menu"></ul>'
   , item: '<li><a href="#"></a></li>'
   };
 
   $.fn.combobox.Constructor = Combobox;
 
+
 }( window.jQuery );
+
+
+

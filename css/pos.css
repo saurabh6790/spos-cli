@@ -1,9 +1,187 @@
 .margin{
-	margin-top:40px;
+	margin-top:20px;
 }
 
-body, html {
+body {
     height: 100%;
     background-repeat: no-repeat;
     background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+}
+
+.pos-container-color{
+	background-color:rgba(64, 131, 160, 0.4); 
+}
+
+.container{
+	border-radius: 10px;
+}
+
+.col-xs-6{
+  margin-top: 10px
+}
+
+.span-width{
+  width:20%;
+  padding: 0px 0px 0px 0px;
+
+}
+.gy_button{
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  color: #555;
+  text-align: center;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width:100%;
+  height: 100%;
+    display: table-cell;
+      width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.table-head{
+	display: table-row;
+    font-weight: bold;
+    text-align: center;
+}
+
+.cell{
+	display:table-cell;
+    border: 1px solid rgb(218, 217, 217);
+
+}
+
+.thumbnail-img{
+  font-size: 60px;
+	padding-top:5px;
+  text-align: center;
+}
+
+.custom-height{
+	height:170px;
+}
+
+.item_thumnails{
+	width:100% ;
+	overflow-y:scroll;
+	height:400px;
+}
+
+.thumbnail{
+ background-color: #FAF9EC;
+}
+
+.col-color{
+	background-color: #FFFFFF;
+}
+
+.item-cart{
+  margin-right: 10px;
+}
+
+/* pos */
+.pos-item {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  padding: 5px;
+  height: 0px;
+  padding-bottom: 38%;
+  width: 30%;
+  margin: 1.6%;
+  border: 1px solid #d1d8dd;
+}
+.pos-item-text {
+  padding: 0px 5px;
+}
+.pos-item .item-code {
+  margin-bottom: 0px;
+}
+.pos-item .no-image {
+  background-color: #fafbfc;
+  border: 1px dashed #d1d8dd;
+}
+.pos-item-image {
+  padding-bottom: 100%;
+  background-size: cover;
+  border: 1px solid transparent;
+  background-position: top center;
+}
+.pos-item-area {
+  border: 1px solid #d1d8dd;
+  border-top: none;
+}
+.pos-item-toolbar {
+  padding: 10px 0px;
+  border-bottom: 1px solid #d1d8dd;
+}
+.item-list-area {
+  padding: 15px 0px;
+}
+.pos-toolbar,
+.pos-bill-toolbar {
+  padding: 10px 0px;
+  border-bottom: 1px solid #d1d8dd;
+  height: 51px;
+}
+.pos-item-toolbar .form-group {
+  margin-bottom: 0px;
+}
+.pos-bill-wrapper {
+  border: 1px solid #d1d8dd;
+  border-top: none;
+  margin-right: -1px;
+}
+.pos-bill {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.pos-bill-row {
+  background-color: #FAF9EC;
+  margin: 0px;
+  padding: 7px 0px;
+  border-bottom: 1px solid #d1d8dd;
+}
+.pos-bill-header {
+  border-bottom: 1px solid;
+  background-color: #f5f7fa;
+}
+.pos-item-qty {
+  display: inline-block;
+}
+.pos-qty-row > div {
+  padding: 5px 0px;
+}
+.pos-qty-btn {
+  margin-top: 3px;
+  cursor: pointer;
+  font-size: 120%;
+}
+.pos .search-area .form-group {
+  max-width: 100% !important;
+}
+.pos .tax-table {
+  margin-bottom: 10px;
+}
+
+.items{
+	overflow-y:scroll;
+	overflow-x:hidden;  
+}
+
+.grand-total-area{
+	border-top: 1px solid #d1d8dd;
+
+}
+
+ul#customer,
+ul#vendor,
+ul#item,
+ul#sub_category{
+  width:90%;
 }

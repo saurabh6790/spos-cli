@@ -16,6 +16,33 @@ body {
 	border-radius: 10px;
 }
 
+.col-xs-6{
+  margin-top: 10px
+}
+
+.span-width{
+  width:20%;
+  padding: 0px 0px 0px 0px;
+
+}
+.gy_button{
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  color: #555;
+  text-align: center;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width:100%;
+  height: 100%;
+    display: table-cell;
+      width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 .table-head{
 	display: table-row;
     font-weight: bold;
@@ -29,8 +56,9 @@ body {
 }
 
 .thumbnail-img{
-	padding:2px 2px 2px 2px; 
-	font-size: 80px;
+  font-size: 60px;
+	padding-top:5px;
+  text-align: center;
 }
 
 .custom-height{
@@ -149,4 +177,11 @@ body {
 .grand-total-area{
 	border-top: 1px solid #d1d8dd;
 
+}
+
+ul#customer,
+ul#vendor,
+ul#item,
+ul#sub_category{
+  width:90%;
 }

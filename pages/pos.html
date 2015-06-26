@@ -7,21 +7,28 @@
 		<script type="text/javascript" src="../js/jquery/jquery.min.js"></script>	
 		<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>	
 		<script src="../js/jStorage-master/jstorage.js"></script>
+		<script src="../js/bootstrap-combobox-master/js/bootstrap-combobox.js"></script>
 		<script src="../js/pos.js"></script>
 		<link  rel="stylesheet" href="../js/bootstrap-combobox-master/css/bootstrap-combobox.css"></link>
-		<script src="../js/bootstrap-combobox-master/js/bootstrap-combobox.js"></script>
+	
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 
 	<body>
 		<nav  class="navbar navbar-default" role="navigation">
-			<div class="container">	
+			<div class="container container-fluid">	
 				<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					        <span class="sr-only">Toggle navigation</span>
+					        <span class="icon-bar"></span>
+					        <span class="icon-bar"></span>
+					        <span class="icon-bar"></span>
+					     </button>
 
 					<a class="navbar-brand" href="#" title="Standalone Point of Sale System">SPOS</a>
 
 				</div><!--/navbar-header -->
-				<div class="collapse navbar-collapse">
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				
 				<ul class="nav navbar-nav">
 					<li><a><img alt="Brand" src="../images/brand.png" style="width:60px;height:35px"></a> </li>
@@ -44,22 +51,22 @@
 		
 		<div class="container margin">
 			<div class="row">
-			<div class="col-md-4 col-sm-4 col-xs-4">
+			<div class="col-md-4 col-sm-4 col-xs-6">
 				<select class="combobox" data-placeholder="Search Customer" id="customer" name="customer">
 				  <option></option>
 				</select>
 			</div>
-			<div class="col-md-2 col-sm-2 col-xs-2">
+			<div class="col-md-2 col-sm-2 col-xs-6">
 				<select class="combobox" data-placeholder="Search Vendor" id="vendor" name="vendor">
 				  <option></option>
 				</select>
 			</div>	
-			<div class="col-md-3 col-sm-3 col-xs-3">
+			<div class="col-md-3 col-sm-3 col-xs-6">
 				<select class="combobox" data-placeholder="Search Sub-Category" id="sub_category" name="sub_category">
 				  <option></option>
 				</select>
 			</div>
-			<div class="col-md-3 col-sm-3 col-xs-3">
+			<div class="col-md-3 col-sm-3 col-xs-6">
 				<select class="combobox" data-placeholder="Search Item" id="item" name ="item">
 				  <option></option>
 				</select>
@@ -87,9 +94,9 @@
 								<div class="row pos-bill-row pos-bill-header">
 									<div class="col-md-2 col-sm-2 col-xs-2"><h5>Item</h5></div>
 									<div class="col-md-4 col-sm-4 col-xs-4"><h5>Description</h5></div>
-									<div class="col-md-3 col-sm-3 col-xs-3"><h5>Quantity</h5></div>
+									<div class="col-md-2 col-sm-2 col-xs-2"><h5>Quantity</h5></div>
 									<div class="col-md-2 col-sm-2 col-xs-2"><h5>Price</h5></div>
-									<div class="col-md-1 col-sm-1 col-xs-1"></div>
+									<div class="col-md-2 col-sm-2 col-xs-2"></div>
 								</div>
 								<div class="items" id="cart_body" style="width:100%;height:250px;">
 								</div>	
@@ -107,9 +114,54 @@
 						</div>	
 				</div>		
 				<div class="col-color" style="text-align:right;padding:10 10;" >
-					<button type="button" class="btn btn-success" style="margin-top:10px;">Submit</button>
+					<button type="button" id="submit_order" class="btn btn-success" style="margin-top:10px;">Submit</button>
 				</div>
 			</div>
-		</div>	
+		</div>
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		 <div class="modal-dialog" role="document">
+    		<div class="modal-content">
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        			<h4 class="modal-title" id="exampleModalLabel">POS</h4>
+      			</div>
+      			<div class="modal-body">
+       				<form>
+          				<div class="form-group">
+            				<label class="control-label">Item Code:</label>
+            				<input type="text" class="form-control" id="modal_item_code" disabled>
+          				</div>
+          				<div class="form-group">
+           					<label  class="control-label">Item Description:</label>
+            				<textarea class="form-control" disabled id="modal_item_description" ></textarea>
+          				</div>
+          				<div class="form-group">
+            				<label class="control-label">Quantity:</label>
+            				<input type="number"  id="modal_item_quantity" placeholder="Quantity" min="0" onkeypress="return isNumberKey(event)" class="form-control" autofocus required>
+          				</div>
+        			</form>
+      			</div>
+      			<div class="modal-footer">
+        			<button type="submit" class="btn btn-primary" id="add_to_cart">Add To Cart</button>
+      			</div>
+    		</div>
+  		</div>
+	</div>
+
+	<div class="modal fade" id="validate_model">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Mandatory Field</h4>
+	      </div>
+	      <div class="modal-body">
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+
 	</body>	
 </html>

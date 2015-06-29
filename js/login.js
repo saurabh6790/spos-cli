@@ -25,9 +25,9 @@ function login(args){
 		url: "http://"+args['domain']+"/api/method/login?usr="+args['usr']+"&pwd="+args['pwd'],
 		dataType: "json",
 		success: function(r) {
-			console.log(r)
-			window.location = "./pages/pos.html";
-			$.jStorage.set("user", r.full_name)
+			// console.log(r)
+			// window.location = "./pages/pos.html";
+			// $.jStorage.set("user", r.full_name)
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("Invalid Login")

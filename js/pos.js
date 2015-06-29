@@ -29,8 +29,127 @@ var image_object = {
 
 }
 
+
+var pos_required_data = 
+
+{
+    "customer" :
+    [
+      {
+        "customer_id" : "CUST-0001",
+        "customer_name" : "Ram"     
+      },
+      {
+        "customer_id" : "CUST-0002",
+        "customer_name" : "Suyash" 
+      },
+      {
+        "customer_id" : "CUST-0003",
+        "customer_name" : "Nilesh" 
+      },
+      {
+        "customer_id" : "CUST-0004",
+        "customer_name" : "Radhika" 
+      },
+      {
+        "customer_id" : "CUST-0005",
+        "customer_name" : "Sai" 
+      },
+      {
+        "customer_id" : "CUST-0006",
+        "customer_name" : "Jaydeep" 
+      }
+
+
+    ],
+
+    "item_group" : ['Product','Raw Material','Consumable','Electrical','Finished Goods'],
+
+    "item" : 
+    [
+      {
+        "item_code" : "Pant",
+        "item_name" : "pant123",
+        "cost" : 50,
+        "group" : "Product"
+      },
+      {
+        "item_code" : "Trouser",
+        "item_name" : "trouser234",
+        "cost" : 70,
+        "group" : "Finished Goods"
+      },
+      {
+        "item_code" : "Book",
+        "item_name" : "Game of Thrones",
+        "cost" : 250,
+        "group" : "Product"
+      },
+      {
+        "item_code" : "Shirt",
+        "item_name" : "white collared shirt",
+        "cost" : 120,
+        "group" : "Finished Goods"
+      },
+      {
+        "item_code" : "Wire",
+        "item_name" : "wire555",
+        "cost" : 54,
+        "group" : "Electrical"
+      },
+      {
+        "item_code" : "Fabric",
+        "item_name" : "fabric877",
+        "cost" : 85,
+        "group" : "Raw Material"
+      },
+      {
+        "item_code" : "Jam",
+        "item_name" : "Kissan Jam",
+        "cost" : 30,
+        "group" : "Consumable"
+      }
+    ],
+
+    "vendor" : 
+    [
+      {
+        "vendor_id" : "John Jackson",
+        "item_list" : ["Pant","Trouser","Shirt"]
+      },
+      {
+        "vendor_id" : "Jerik",
+        "item_list" : ["Book","Trouser"]
+      },
+      {
+        "vendor_id" : "Kareena",
+        "item_list" : ["Fabric","Wire"]
+      },
+      {
+        "vendor_id" : "Laggan",
+        "item_list" : ["Shirt","Trouser","Fabric"]
+      },
+      {
+        "vendor_id" : "Mario",
+        "item_list" : ["Shirt","Wire","Jam"]
+      },
+      {
+        "vendor_id" : "Mike",
+        "item_list" : ["Book","Fabric","Pant"]
+      }
+
+    ]
+
+}
+
+
+
+
+
+
 $(document).ready(function(){
 
+    set_pos_required_data_in_jstorage()   
     
     $.each($.jStorage.get("customer"),function(index,value){
     	$("body").find('select[id=customer]').append("<option>{0}</option>".replace("{0}",value.customer_id))
@@ -156,9 +275,6 @@ $(document).ready(function(){
     })
 
 
-
-
-
      
 init_for_item_span_trigger()
 init_for_sub_category_span_trigger()
@@ -193,6 +309,39 @@ function init_for_all_item_rendering(){
 
 
 
+function execute_common_sub_category_rendering(subcategory_list){
+  $("body").find('ul[id=sub_category]').empty()
+  $("body").find('select[id=sub_category]').empty()
+  $.each(subcategory_list,function(index,value){
+      $("body").find('select[id=sub_category]').append("<option>{0}</option>".replace("{0}",value))
+
+    })
+  append_subcategory_list_to_ul(subcategory_list)
+  $('select[id=sub_category]').my_combobox(subcategory_list);
+}
+
+
+
+function append_subcategory_list_to_ul(subcategory_list){
+  $.each(subcategory_list,function(index,value){
+      strong_tag = create_custom_ul_for_sub_category(value)
+       console.log("<li data-value='{1}''><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
+       $("body").find('ul[id=sub_category]').append("<li data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
+
+  }) 
+
+}
+
+function create_custom_ul_for_sub_category(sub_category){
+  var strong_tag = ''
+  console.log(sub_category.split(''))
+  $.each(sub_category.split(''),function(index,value){
+      strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value)
+  })
+  return strong_tag
+
+}
+
 
 function calculate_grand_total(){
     total_value = 0.0
@@ -217,7 +366,7 @@ function append_all_items_to_ul(){
      item_list = []   
      $.each($.jStorage.get("item"),function(index,value){
         strong_tag = create_custom_ul(value)
-         $("body").find('ul[id=item]').append("<li data-value={1}><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
+         $("body").find('ul[id=item]').append("<li data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
            item_list.push(value.item_code)
     })
      $('select[id=item]').my_combobox(item_list);
@@ -317,6 +466,20 @@ function check_if_item_exists_against_this_subcategory(sub_category,item_list){
 }
 
 
+
+function get_sub_category_against_item_list(item_list){
+  sub_category_list = []
+    $.each(item_list,function(index,value){
+        $.grep($.jStorage.get("item"), function(e){ 
+            if (e.item_code == value){
+                return sub_category_list.push(e.group)
+            } 
+        });
+    })
+    return sub_category_list
+}
+
+
 function init_for_item_span_trigger(){
   $("[name=item][type=text]").siblings("span").on("click","",function(){
     if (  $("[name=item][type=text]").siblings("span").find("span:first").attr("check") == "active" ){
@@ -361,6 +524,9 @@ function init_for_sub_category_span_trigger(){
               execute_sub_category_remove_span_trigger()
         
         }
+        else if ( $("[name=sub_category][type=text]").siblings("span").find("span:first").attr("check") == "active"){
+              execute_sub_category_search_span_trigger()
+          }
     });   
 }
 
@@ -368,10 +534,26 @@ function init_for_sub_category_span_trigger(){
 
 
 function execute_sub_category_remove_span_trigger(){   
-         check_for_render_thumbnails()   
+    check_for_render_thumbnails()   
 
 }
 
+
+function execute_sub_category_search_span_trigger(){
+    if( $("[name=vendor][type=text]").val()){
+      item_list = get_item_against_this_vendor($("[name=vendor][type=text]").val())
+      sub_category_list = get_sub_category_against_item_list(item_list)
+      sub_category_list = $.unique(sub_category_list)
+      execute_common_sub_category_rendering(sub_category_list)
+    }
+    else if(!$("[name=vendor][type=text]").val()){
+      sub_category_list = $.jStorage.get("item_group")
+       execute_common_sub_category_rendering(sub_category_list)
+
+    }   
+
+
+}
 
 
 function init_for_vendor_span_trigger(){
@@ -460,4 +642,12 @@ function validate_for_customer_and_vendor_selection(){
 
     })
 
+}
+
+
+function set_pos_required_data_in_jstorage(){
+  var key_list = ["customer","vendor","item_group","item"]
+  $.each(key_list,function(index,value){
+     $.jStorage.set(value,pos_required_data[value])    
+  })
 }

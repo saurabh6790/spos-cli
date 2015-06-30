@@ -30,126 +30,12 @@ var image_object = {
 }
 
 
-var pos_required_data = 
-
-{
-    "customer" :
-    [
-      {
-        "customer_id" : "CUST-0001",
-        "customer_name" : "Ram"     
-      },
-      {
-        "customer_id" : "CUST-0002",
-        "customer_name" : "Suyash" 
-      },
-      {
-        "customer_id" : "CUST-0003",
-        "customer_name" : "Nilesh" 
-      },
-      {
-        "customer_id" : "CUST-0004",
-        "customer_name" : "Radhika" 
-      },
-      {
-        "customer_id" : "CUST-0005",
-        "customer_name" : "Sai" 
-      },
-      {
-        "customer_id" : "CUST-0006",
-        "customer_name" : "Jaydeep" 
-      }
-
-
-    ],
-
-    "item_group" : ['Product','Raw Material','Consumable','Electrical','Finished Goods'],
-
-    "item" : 
-    [
-      {
-        "item_code" : "Pant",
-        "item_name" : "pant123",
-        "cost" : 50,
-        "group" : "Product"
-      },
-      {
-        "item_code" : "Trouser",
-        "item_name" : "trouser234",
-        "cost" : 70,
-        "group" : "Finished Goods"
-      },
-      {
-        "item_code" : "Book",
-        "item_name" : "Game of Thrones",
-        "cost" : 250,
-        "group" : "Product"
-      },
-      {
-        "item_code" : "Shirt",
-        "item_name" : "white collared shirt",
-        "cost" : 120,
-        "group" : "Finished Goods"
-      },
-      {
-        "item_code" : "Wire",
-        "item_name" : "wire555",
-        "cost" : 54,
-        "group" : "Electrical"
-      },
-      {
-        "item_code" : "Fabric",
-        "item_name" : "fabric877",
-        "cost" : 85,
-        "group" : "Raw Material"
-      },
-      {
-        "item_code" : "Jam",
-        "item_name" : "Kissan Jam",
-        "cost" : 30,
-        "group" : "Consumable"
-      }
-    ],
-
-    "vendor" : 
-    [
-      {
-        "vendor_id" : "John Jackson",
-        "item_list" : ["Pant","Trouser","Shirt"]
-      },
-      {
-        "vendor_id" : "Jerik",
-        "item_list" : ["Book","Trouser"]
-      },
-      {
-        "vendor_id" : "Kareena",
-        "item_list" : ["Fabric","Wire"]
-      },
-      {
-        "vendor_id" : "Laggan",
-        "item_list" : ["Shirt","Trouser","Fabric"]
-      },
-      {
-        "vendor_id" : "Mario",
-        "item_list" : ["Shirt","Wire","Jam"]
-      },
-      {
-        "vendor_id" : "Mike",
-        "item_list" : ["Book","Fabric","Pant"]
-      }
-
-    ]
-
-}
-
-
 
 
 
 
 $(document).ready(function(){
 
-    set_pos_required_data_in_jstorage()   
     
     $.each($.jStorage.get("customer"),function(index,value){
     	$("body").find('select[id=customer]').append("<option>{0}</option>".replace("{0}",value.customer_id))
@@ -193,7 +79,6 @@ $(document).ready(function(){
     })
 
 
-
    
 
     $("#add_to_cart").click(function(){
@@ -204,8 +89,8 @@ $(document).ready(function(){
         cost = $(this).attr("cost")
         existing_item = check_if_item_exists_in_cart(item_code)  
         if (existing_item.length){
-           $("#cart_body").find("[item_code={0}]".replace("{0}",item_code)).find("#quantity").val(quantity)
-           $("#cart_body").find("[item_code={0}]".replace("{0}",item_code)).attr("quantity",quantity)
+           $("#cart_body").find("[item_code='{0}']".replace("{0}",String(item_code))).find("#quantity").val(quantity)
+           $("#cart_body").find("[item_code='{0}']".replace("{0}",String(item_code))).attr("quantity",quantity)
         }else{
              $("#cart_body").append('<div class="row pos-bill-row pos-bill-item" item_code="'+item_code+'" description="'+description+'" cost="'+cost+'"  quantity='+quantity+'>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><h5>'+item_code+'</h5></div>\
@@ -217,7 +102,7 @@ $(document).ready(function(){
 
         }       
        
-        modal.hide()    
+       $('#exampleModal').modal('hide')
         calculate_grand_total()
     })
 
@@ -325,7 +210,6 @@ function execute_common_sub_category_rendering(subcategory_list){
 function append_subcategory_list_to_ul(subcategory_list){
   $.each(subcategory_list,function(index,value){
       strong_tag = create_custom_ul_for_sub_category(value)
-       console.log("<li data-value='{1}''><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
        $("body").find('ul[id=sub_category]').append("<li data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
 
   }) 
@@ -334,7 +218,6 @@ function append_subcategory_list_to_ul(subcategory_list){
 
 function create_custom_ul_for_sub_category(sub_category){
   var strong_tag = ''
-  console.log(sub_category.split(''))
   $.each(sub_category.split(''),function(index,value){
       strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value)
   })
@@ -424,7 +307,7 @@ function get_qty_of_existing_item(item_code){
 
 
 function check_if_item_exists_in_cart(item_code){
-    existing_row = $.grep($("#cart_body").children(), function(e){ return $(e).attr("item_code") == item_code; })
+    existing_row = $.grep($("#cart_body").children(), function(e){ return $(e).attr("item_code") == String(item_code); })
     return existing_row
 }
 
@@ -437,7 +320,7 @@ function get_item_against_this_vendor(vendor){
 
 function get_item_against_this_sub_category(sub_category){
     item_list = []
-    item_dict = $.grep($.jStorage.get("item"), function(e){ return e.group == sub_category; });
+    item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_group == sub_category; });
      if (parseInt(Object.keys(item_dict).length)){
          $.each(item_dict,function(index,value){
             item_list.push(value.item_code)
@@ -453,16 +336,19 @@ function get_item_against_this_sub_category_and_vendor(sub_category,vendor){
 }
 
 function check_if_item_exists_against_this_subcategory(sub_category,item_list){
-  sorted_item_list = []
-  $.each(item_list,function(index,value){
-      $.grep($.jStorage.get("item"), function(e){ 
-          if (e.group == sub_category && e.item_code == value){
-                      
-              return sorted_item_list.push(e.item_code); 
-          }
-      }); 
-  })    
-  return sorted_item_list
+    sorted_item_list = []
+    $.each(item_list,function(index,value){
+        $.grep($.jStorage.get("item"), function(e){ 
+            if (e.item_group == sub_category && e.item_code == value){
+                        
+                return sorted_item_list.push(e.item_code); 
+            }
+
+        }); 
+
+    })    
+
+    return sorted_item_list
 }
 
 
@@ -472,7 +358,7 @@ function get_sub_category_against_item_list(item_list){
     $.each(item_list,function(index,value){
         $.grep($.jStorage.get("item"), function(e){ 
             if (e.item_code == value){
-                return sub_category_list.push(e.group)
+                return sub_category_list.push(e.item_group)
             } 
         });
     })
@@ -594,7 +480,6 @@ function check_for_render_thumbnails(){
     else if ($("[name=sub_category][type=text]").val() &&  $("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
         item_list = get_item_against_this_sub_category_and_vendor($("[name=sub_category][type=text]").val() ,$("[name=vendor][type=text]").val())
         item_dict = get_item_dict_from_item_list(item_list)
-        console.log(item_dict)
         render_thumbnails(item_dict)
     }
 
@@ -612,7 +497,7 @@ function render_thumbnails(item_dict){
     $.each(item_dict,function(index,value){
     var initial = value.item_name[0].toLowerCase()
     $('.item_thumnails').append('<div class="col-sm-4 col-md-3 col-xs-6">\
-                        <div class="thumbnail"  data-toggle="modal" data-target="#exampleModal" data-item_code="'+value.item_code+'" data-description="'+value.item_name+'" >\
+                        <div class="thumbnail"    data-toggle="modal" data-target="#exampleModal" data-item_code="'+value.item_code+'" data-description="'+value.item_name+'" >\
                         <div  class="thumbnail-img">\
                         <img style="width:60px;height:60px" src='+image_object[initial][0]+'></img>\
                         </div>\
@@ -643,7 +528,6 @@ function validate_for_customer_and_vendor_selection(){
     })
 
 }
-
 
 function set_pos_required_data_in_jstorage(){
   var key_list = ["customer","vendor","item_group","item"]

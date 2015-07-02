@@ -48,3 +48,7 @@ input{
 #custom_ul_id{
   width:90%;
 }
+
+.typeahead.typeahead-long.dropdown-menu li{
+  border-bottom:1px solid #d1d8dd;
+} 

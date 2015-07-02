@@ -12,6 +12,10 @@ body {
 	background-color:rgba(64, 131, 160, 0.4); 
 }
 
+.thumbnail{
+  height:175px;  
+}
+
 
 .container{
 	border-radius: 10px;

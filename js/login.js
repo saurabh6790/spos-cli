@@ -29,9 +29,9 @@ function login(args){
  				method: "GET",
   				url: "http://"+args['domain']+"/api/method/spos.spos.spos_api.get_pos_required_data?sales_user="+args['usr'],
  				dataType: "json",
- 				success:function(r){
+ 				success:function(result){
  					var pos_required_data
- 					pos_required_data = r.message
+ 					pos_required_data = result.message
  					set_pos_required_data_in_jstorage(pos_required_data)
 					window.location = "./pages/pos.html";
 					$.jStorage.set("user", r.full_name)
@@ -55,7 +55,7 @@ function login(args){
 
 
 function set_pos_required_data_in_jstorage(pos_required_data){
-  var key_list = ["customer","vendor","item_group","item"]
+  var key_list = ["customer","vendor","item_group","item","price_list"]
   $.each(key_list,function(index,value){
      $.jStorage.set(value,pos_required_data[value])    
   })

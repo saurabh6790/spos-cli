@@ -35,8 +35,12 @@ var image_object = {
 
 
 $(document).ready(function(){
+    if(!$.jStorage.get("user")){
+       window.location = "spos/";
+    }
 
-    
+    $("a.dropdown-toggle.user").prepend("<p style='display: inline-block;'>{0}</p>".replace("{0}",$.jStorage.get("user")))
+      
     $.each($.jStorage.get("customer"),function(index,value){
     	$("body").find('select[id=customer]').append("<option>{0}</option>".replace("{0}",value.customer_id))
 
@@ -144,26 +148,36 @@ $(document).ready(function(){
     $("[name=item][type=text]").change(function(){
         // $("[name=item][type=text]").siblings("span").find("span:first").attr("check","deactive")
         item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
-        render_thumbnails(item_dict)
-        if(!$(this).val()){
+        if(item_dict.length){
+          render_thumbnails(item_dict)
+        }         
+        else if(!$(this).val()){
+
            check_for_render_thumbnails()
         }
 
 
     })
 
-
+      $("[name=item][type=text]").keypress(function(){
+         execute_item_search_span_trigger()
+         validate_for_vendor_selection_on_item_selection()
+      })
  
 
     $("#submit_order").click(function(){
         validate_for_customer_and_vendor_selection()
     })
 
+     $("#sign_out").click(function(){
+       window.location = "spos/";
+       $.jStorage.deleteKey("user")
+    })
 
      
-init_for_item_span_trigger()
-init_for_sub_category_span_trigger()
-init_for_vendor_span_trigger()
+    init_for_item_span_trigger()
+    init_for_sub_category_span_trigger()
+    init_for_vendor_span_trigger()
 
   });
 
@@ -210,7 +224,7 @@ function execute_common_sub_category_rendering(subcategory_list){
 function append_subcategory_list_to_ul(subcategory_list){
   $.each(subcategory_list,function(index,value){
       strong_tag = create_custom_ul_for_sub_category(value)
-       $("body").find('ul[id=sub_category]').append("<li data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
+       $("body").find('ul[id=sub_category]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
 
   }) 
 
@@ -254,7 +268,7 @@ function append_all_items_to_ul(){
      item_list = []   
      $.each($.jStorage.get("item"),function(index,value){
         strong_tag = create_custom_ul(value)
-         $("body").find('ul[id=item]').append("<li data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
+         $("body").find('ul[id=item]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
            item_list.push(value.item_code)
 
     })
@@ -270,7 +284,7 @@ function append_item_list_to_ul(item_list){
     
      $.each(item_dict,function(index,value){
         strong_tag = create_custom_ul(value)
-         $("body").find('ul[id=item]').append("<li data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
+         $("body").find('ul[id=item]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
 
 
     })
@@ -302,12 +316,12 @@ function create_custom_ul(value){
     $.each(my_str.split(''),function(index,value){
         strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value)
     })
-    strong_tag = strong_tag + "<br>"
-    $.each(value.item_name.split(''),function(index,value){
-        strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value)
+    strong_tag = strong_tag + "<br><p style='font-size:12px'>"
+    $.each(value.item_description.split(''),function(index,value){
+        strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value) 
     })
 
-    return strong_tag
+    return strong_tag + "</p>"
 
 }
 
@@ -407,6 +421,7 @@ function init_for_item_span_trigger(){
     $("[name=item][type=text]").siblings("span").on("click","",function(){
 
         if (  $("[name=item][type=text]").siblings("span").find("span:first").attr("check") == "active" ){
+              validate_for_vendor_selection_on_item_selection()
               execute_item_search_span_trigger()
         
         }else{
@@ -539,15 +554,15 @@ function render_thumbnails(item_dict){
 
     $('.item_thumnails').empty()
     $.each(item_dict,function(index,value){
-    var initial = value.item_name[0].toLowerCase()
+    var initial = value.item_description[0].toLowerCase()
     $('.item_thumnails').append('<div class="col-sm-4 col-md-3 col-xs-6">\
-                        <div class="thumbnail"    data-toggle="modal" data-target="#exampleModal" data-item_code="'+value.item_code+'" data-description="'+value.item_name+'" >\
+                        <div class="thumbnail"    data-toggle="modal" data-target="#exampleModal" data-item_code="'+value.item_code+'" data-description="'+value.item_description+'" >\
                         <div  class="thumbnail-img">\
                         <img style="width:60px;height:60px" src='+image_object[initial][0]+'></img>\
                         </div>\
                         <div>\
                               <p style="text-align:center;padding-top:5px"><b >'+value.item_code+'</b></p>\
-                              <p style="font-size:11px" >'+value.item_name+'</p>\
+                              <p style="font-size:11px" >'+value.item_description.slice(0,50)+'</p>\
                               </div>\
                               </div>\
                                </div>')
@@ -570,6 +585,16 @@ function validate_for_customer_and_vendor_selection(){
         }
 
     })
+
+}
+
+
+function validate_for_vendor_selection_on_item_selection(){
+
+    if(!$("[name=vendor][type=text]").val()){
+        $('#validate_model').modal("show")
+         $('#validate_model').find('.modal-body').text('Please Select Vendor for Item Selection')
+    }
 
 }
 

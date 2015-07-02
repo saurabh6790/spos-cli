@@ -82,8 +82,10 @@ $(document).ready(function(){
         modal.find('#add_to_cart').attr("cost",cost[0].cost)  
     })
 
+    $('#exampleModal').on('shown.bs.modal', function (event) {
+      $("#modal_item_quantity").focus()
+    })
 
-   
 
     $("#add_to_cart").click(function(){
         var modal = $(this).parent().parent().parent().parent()

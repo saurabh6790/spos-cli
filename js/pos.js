@@ -166,7 +166,11 @@ $(document).ready(function(){
  
 
     $("#submit_order").click(function(){
-        validate_for_customer_and_vendor_selection()
+        return_value = validate_for_customer_and_vendor_selection()
+        if (return_value == false && $("#cart_body").children().length !=0){
+          
+          create_and_submit_order_data()
+        }
     })
 
      $("#sign_out").click(function(){
@@ -576,16 +580,18 @@ function render_thumbnails(item_dict){
 function validate_for_customer_and_vendor_selection(){
 
     my_obj = {"Customer":$("[name=customer][type=text]").val() , "Vendor": $("[name=vendor][type=text]").val() }
-
+    my_flag = false
     $.each(my_obj,function(key,value){
         if(!value){
             $('#validate_model').modal("show")
              $('#validate_model').find('.modal-body').text('Please Select {0} for Order Submission '.replace("{0}",key))
+            my_flag = true
             return false
         }
 
     })
 
+    return my_flag
 }
 
 
@@ -599,3 +605,71 @@ function validate_for_vendor_selection_on_item_selection(){
 }
 
 
+function create_and_submit_order_data(){
+   order_dict = create_order_data() 
+
+  if ($.jStorage.get("orders") === null){
+    $.jStorage.set("orders",[])
+    store_order_in_jstorage(order_dict)
+
+  }else if($.jStorage.get("orders")){
+    store_order_in_jstorage(order_dict)
+  }
+
+  $('#validate_model').modal("show")
+  $('#validate_model').find('.modal-body').text('Order Submitted Successfully')
+  
+  init_for_so_po_creation(order_dict)
+  console.log(order_dict)
+}
+
+
+
+function create_order_data(){
+  this.order_dict = {}
+  time_stamp = Date.now()
+  this.order_dict[time_stamp] = {}
+  this.order_dict[time_stamp]["customer"] = $("[name=customer][type=text]").val()
+  this.order_dict[time_stamp]["supplier"] = $("[name=vendor][type=text]").val() 
+  this.order_dict[time_stamp]["selling_price_list"] = $.jStorage.get("price_list")
+  this.order_dict[time_stamp]["grand_total"] = $("#grand_total").text()
+  this.order_dict[time_stamp]["items"] = []
+  var me = this
+  $.each($("#cart_body").children(),function(index,value){
+      this.item_row_dict = {}
+      this.item_row_dict["item_code"] = $(this).attr("item_code")
+      this.item_row_dict["description"] = $(this).attr("description")
+      this.item_row_dict["qty"] = $(this).attr("quantity")
+      this.item_row_dict["rate"] = $(this).attr("cost")
+      me.order_dict[time_stamp]["items"].push(this.item_row_dict)
+  })
+  return this.order_dict
+}
+
+
+
+function init_for_so_po_creation(order_dict){
+  console.log("init")
+  var arg = {}
+  arg['my_key'] = JSON.stringify(order_dict);
+  
+    $.ajax({
+        method: "POST",
+        url: "http://spos_test1/api/method/spos.spos.spos_api.create_purchase_order",
+        data: arg,
+        dataType: "json",
+        success:function(r){
+          console.log(r.message)
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert("sales order not created")
+        }
+      });
+
+}
+
+function store_order_in_jstorage(order_dict){
+  item_list = $.jStorage.get("orders")
+  item_list.push(order_dict)
+  $.jStorage.set("orders",item_list) 
+}

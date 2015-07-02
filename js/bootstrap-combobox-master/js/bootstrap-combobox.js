@@ -221,11 +221,11 @@
         i = $(that.options.item).attr('data-value', item);
       if(that.$element[0].name == 'customer'){
         result = $.grep($.jStorage.get("customer"), function(e){ return e.customer_id == item; });
-        i.find('a').html(that.highlighter(item)+"</br>"+that.highlighter(result[0].customer_name));
+        i.find('a').html(that.highlighter(item)+"</br><p style='font-size:12px'>"+that.highlighter(result[0].customer_name)+"</p>");
       }
       else if(that.$element[0].name == 'item'){
          result = $.grep($.jStorage.get("item"), function(e){ return e.item_code == item; });
-        i.find('a').html(that.highlighter(item)+"</br>"+that.highlighter(result[0].item_name));
+        i.find('a').html(that.highlighter(item)+"</br><p style='font-size:12px'>"+that.highlighter(result[0].item_description)+"</p>");
       }else{
         i.find('a').html(that.highlighter(item));
       }
@@ -463,7 +463,7 @@
   $.fn.combobox.defaults = {
     bsVersion: '3'
   , menu: '<ul class="typeahead typeahead-long dropdown-menu"></ul>'
-  , item: '<li><a href="#"></a></li>'
+  , item: '<li ><a href="#"></a></li>'
   };
 
   $.fn.combobox.Constructor = Combobox;

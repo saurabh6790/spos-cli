@@ -82,8 +82,10 @@ $(document).ready(function(){
         modal.find('#add_to_cart').attr("cost",cost[0].cost)  
     })
 
+    $('#exampleModal').on('shown.bs.modal', function (event) {
+      $("#modal_item_quantity").focus()
+    })
 
-   
 
     $("#add_to_cart").click(function(){
         var modal = $(this).parent().parent().parent().parent()
@@ -166,18 +168,25 @@ $(document).ready(function(){
  
 
     $("#submit_order").click(function(){
-        validate_for_customer_and_vendor_selection()
+        return_value = validate_for_customer_and_vendor_selection()
+        if (return_value == false && $("#cart_body").children().length !=0){
+          
+          create_and_submit_order_data()
+        }
     })
 
      $("#sign_out").click(function(){
        window.location = "spos/";
        $.jStorage.deleteKey("user")
+       $.jStorage.deleteKey("domain")
+       $.jStorage.deleteKey("sess")
     })
 
      
     init_for_item_span_trigger()
     init_for_sub_category_span_trigger()
     init_for_vendor_span_trigger()
+    create_orders_from_jstorage_data()
 
   });
 
@@ -541,16 +550,18 @@ function render_thumbnails(item_dict){
 function validate_for_customer_and_vendor_selection(){
 
     my_obj = {"Customer":$("[name=customer][type=text]").val() , "Vendor": $("[name=vendor][type=text]").val() }
-
+    my_flag = false
     $.each(my_obj,function(key,value){
         if(!value){
             $('#validate_model').modal("show")
              $('#validate_model').find('.modal-body').text('Please Select {0} for Order Submission '.replace("{0}",key))
+            my_flag = true
             return false
         }
 
     })
 
+    return my_flag
 }
 
 
@@ -569,4 +580,159 @@ function validate_for_vendor_selection_on_item_selection(){
          $('#validate_model').find('.modal-body').text('Please Select Vendor for Item Selection')
     }
 
+}
+
+
+function create_and_submit_order_data(){
+   order_dict = create_order_data() 
+
+  if ($.jStorage.get("orders") === null){
+    $.jStorage.set("orders",[])
+
+  }
+
+  init_for_so_po_creation(order_dict)
+  console.log(order_dict)
+}
+
+
+
+function create_order_data(){
+  this.order_dict = {}
+  time_stamp = Date.now()
+  this.order_dict[time_stamp] = {}
+  this.order_dict[time_stamp]["customer"] = $("[name=customer][type=text]").val()
+  this.order_dict[time_stamp]["supplier"] = $("[name=vendor][type=text]").val() 
+  this.order_dict[time_stamp]["selling_price_list"] = $.jStorage.get("price_list")
+  this.order_dict[time_stamp]["grand_total"] = $("#grand_total").text()
+  this.order_dict[time_stamp]["items"] = []
+  var me = this
+  $.each($("#cart_body").children(),function(index,value){
+      this.item_row_dict = {}
+      this.item_row_dict["item_code"] = $(this).attr("item_code")
+      this.item_row_dict["description"] = $(this).attr("description")
+      this.item_row_dict["qty"] = $(this).attr("quantity")
+      this.item_row_dict["rate"] = $(this).attr("cost")
+      me.order_dict[time_stamp]["items"].push(this.item_row_dict)
+  })
+  return this.order_dict
+}
+
+
+
+function init_for_so_po_creation(order_dict){
+  connection_flag = check_for_internet_connectivity()
+  if (connection_flag == true){
+        var arg = {}
+        arg['order_dict'] = JSON.stringify(order_dict);
+        arg['email'] = JSON.stringify($.jStorage.get("email"))
+          $.ajax({
+              method: "POST",
+              url: "http://spos_test1/api/method/spos.spos.spos_api.create_so_and_po",
+              data: arg,
+              timeout:7000,
+              dataType: "json",
+              success:function(r){
+                if (r.message == 'fail'){
+                  store_order_in_jstorage(order_dict)  
+                }
+                show_order_submission_message()  
+                
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                store_order_in_jstorage(order_dict)
+                show_order_submission_message()
+              }
+            });
+  }
+  else if(connection_flag == false)
+  {
+    store_order_in_jstorage(order_dict)
+    show_order_submission_message() 
+  }
+}
+
+function store_order_in_jstorage(order_dict){
+  item_list = $.jStorage.get("orders")
+  item_list.push(order_dict)
+  $.jStorage.set("orders",item_list) 
+}
+
+function show_order_submission_message(){
+  $('#validate_model').modal("show")
+  $('#validate_model').find('.modal-body').text('Order Submitted Successfully')
+}
+
+
+function check_for_internet_connectivity(){
+  var xhr = new ( window.ActiveXObject || XMLHttpRequest )( "Microsoft.XMLHTTP" );
+  xhr.open( "HEAD","http://spos/", false)
+  try {
+        xhr.send();
+        if ( xhr.status >= 200 && (xhr.status < 300 || xhr.status === 304) ){
+          return true
+        };
+    } 
+    catch (error) {
+        return false
+    }
+
+}
+
+function create_orders_from_jstorage_data(){
+    setInterval(function(){
+      connection_flag = check_for_internet_connectivity()
+      if (connection_flag == true){
+        init_for_so_po_creation_from_jstorage()
+      }
+
+    },100000)
+}
+
+function init_for_so_po_creation_from_jstorage(){
+    $.each($.jStorage.get("orders"),function(index,value){
+      connection_flag = check_for_internet_connectivity()
+        if (connection_flag == true){          
+            execute_so_po_creation_from_jstorage(value)
+        }
+        else if (connection_flag == false){
+            return false
+        }
+
+    })
+}
+
+function execute_so_po_creation_from_jstorage(order_dict){
+    var arg = {}
+    arg['order_dict'] = JSON.stringify(order_dict);
+    arg['email'] = JSON.stringify($.jStorage.get("email"))
+    $.ajax({
+          method: "POST",
+          url: "http://spos_test1/api/method/spos.spos.spos_api.create_so_and_po",
+          data: arg,
+          timeout:7000,
+          dataType: "json",
+          success:function(r){
+            if (r.message == 'success'){
+              remove_order_from_jstorage(order_dict)  
+            }
+            
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+          }
+      });
+}
+
+function remove_order_from_jstorage(order_dict){
+   order_key = Object.keys(order_dict)[0]
+   orders_list = $.jStorage.get("orders")
+   $.each(orders_list, function(index,value){
+        if(Object.keys(value)[0] == order_key){
+            orders_list.splice(index, 1);
+            $.jStorage.set("orders",orders_list)
+            return false
+        } 
+
+    });
 }

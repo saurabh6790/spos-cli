@@ -179,7 +179,7 @@ $(document).ready(function(){
        window.location = "spos/";
        $.jStorage.deleteKey("user")
        $.jStorage.deleteKey("domain")
-       $.jStorage.deleteKey("sess")
+       $.jStorage.deleteKey("email")
     })
 
      
@@ -628,7 +628,7 @@ function init_for_so_po_creation(order_dict){
         arg['email'] = JSON.stringify($.jStorage.get("email"))
           $.ajax({
               method: "POST",
-              url: "http://spos_test1/api/method/spos.spos.spos_api.create_so_and_po",
+              url: "http://{0}/api/method/spos.spos.spos_api.create_so_and_po".replace("{0}",$.jStorage.get("domain")),
               data: arg,
               timeout:7000,
               dataType: "json",
@@ -709,7 +709,7 @@ function execute_so_po_creation_from_jstorage(order_dict){
     arg['email'] = JSON.stringify($.jStorage.get("email"))
     $.ajax({
           method: "POST",
-          url: "http://spos_test1/api/method/spos.spos.spos_api.create_so_and_po",
+          url: "http://{0}/api/method/spos.spos.spos_api.create_so_and_po".replace("{0}",$.jStorage.get("domain")),
           data: arg,
           timeout:7000,
           dataType: "json",

@@ -38,7 +38,6 @@ $(document).ready(function(){
     if(!$.jStorage.get("user")){
        window.location = "spos/";
     }
-
     $("a.dropdown-toggle.user").prepend("<p style='display: inline-block;'>{0}</p>".replace("{0}",$.jStorage.get("user")))
       
     $.each($.jStorage.get("customer"),function(index,value){
@@ -64,7 +63,7 @@ $(document).ready(function(){
    $('.combobox').combobox()
 
     render_thumbnails($.jStorage.get("item"))
-
+   setTimeout(function () {waitingDialog.hide();},8000) 
         
     $('#exampleModal').on('show.bs.modal', function (event) {
         var thumbnail = $(event.relatedTarget) // div that triggered the modal
@@ -169,6 +168,7 @@ $(document).ready(function(){
 
     $("#submit_order").click(function(){
         return_value = validate_for_customer_and_vendor_selection()
+        validate_cart_body_empty()
         if (return_value == false && $("#cart_body").children().length !=0){
           
           create_and_submit_order_data()
@@ -562,12 +562,16 @@ function check_for_render_thumbnails(){
 function render_thumbnails(item_dict){
 
     $('.item_thumnails').empty()
+    var default_img = "../vendor/images/thumb-default.gif"
+    if ($("[name=vendor][type=text]").val()){
+      var initial =  $("[name=vendor][type=text]").val()[0].toLowerCase()
+      default_img = image_object[initial][0]
+    }
     $.each(item_dict,function(index,value){
-    var initial = value.item_description[0].toLowerCase()
     $('.item_thumnails').append('<div class="col-sm-4 col-md-3 col-xs-6">\
                         <div class="thumbnail"    data-toggle="modal" data-target="#exampleModal" data-item_code="'+value.item_code+'" data-description="'+value.item_description+'" >\
                         <div  class="thumbnail-img">\
-                        <img style="width:60px;height:60px" src='+image_object[initial][0]+'></img>\
+                        <img style="width:60px;height:60px" src='+default_img+'></img>\
                         </div>\
                         <div>\
                               <p style="text-align:center;padding-top:5px"><b >'+value.item_code+'</b></p>\
@@ -611,6 +615,7 @@ function validate_for_vendor_selection_on_item_selection(){
 
 
 function create_and_submit_order_data(){
+   call_block_ui()
    order_dict = create_order_data() 
 
   if ($.jStorage.get("orders") === null){
@@ -657,26 +662,31 @@ function init_for_so_po_creation(order_dict){
               method: "POST",
               url: "http://{0}/api/method/spos.spos.spos_api.create_so_and_po".replace("{0}",$.jStorage.get("domain")),
               data: arg,
-              timeout:7000,
+              timeout:15000,
               dataType: "json",
               success:function(r){
                 if (r.message == 'fail'){
                   store_order_in_jstorage(order_dict)  
                 }
+               waitingDialog.hide();
                 show_order_submission_message()  
-                
+                  clear_accounting_data_after_submission() 
               },
               error: function(XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)
                 store_order_in_jstorage(order_dict)
+                waitingDialog.hide();
                 show_order_submission_message()
+                clear_accounting_data_after_submission() 
               }
             });
   }
   else if(connection_flag == false)
   {
     store_order_in_jstorage(order_dict)
-    show_order_submission_message() 
+    waitingDialog.hide();
+    show_order_submission_message()
+    clear_accounting_data_after_submission() 
   }
 }
 
@@ -691,6 +701,13 @@ function show_order_submission_message(){
   $('#validate_model').find('.modal-body').text('Order Submitted Successfully')
 }
 
+function validate_cart_body_empty(){
+  if (!$("#cart_body").children().length){
+      $('#validate_model').modal("show")
+      $('#validate_model').find('.modal-body').text('Empty Cart Area Found') 
+  }
+  
+}
 
 function check_for_internet_connectivity(){
   var xhr = new ( window.ActiveXObject || XMLHttpRequest )( "Microsoft.XMLHTTP" );
@@ -738,7 +755,7 @@ function execute_so_po_creation_from_jstorage(order_dict){
           method: "POST",
           url: "http://{0}/api/method/spos.spos.spos_api.create_so_and_po".replace("{0}",$.jStorage.get("domain")),
           data: arg,
-          timeout:7000,
+          timeout:15000,
           dataType: "json",
           success:function(r){
             if (r.message == 'success'){
@@ -762,4 +779,19 @@ function remove_order_from_jstorage(order_dict){
         } 
 
     });
+}
+
+
+function call_block_ui(){
+ waitingDialog.show('Please wait.......', {dialogSize: 'lg'});
+}
+
+
+function clear_accounting_data_after_submission(){
+  $("#cart_body").empty()
+  $("[name=vendor][type=text]").val("")
+  $("[name=item][type=text]").val("")
+  $("[name=sub_category][type=text]").val("")
+  render_thumbnails($.jStorage.get("item"))
+
 }

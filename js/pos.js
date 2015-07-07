@@ -36,7 +36,7 @@ var image_object = {
 
 $(document).ready(function(){
     if(!$.jStorage.get("user")){
-       window.location = "spos/";
+       window.location = window.location.origin;
     }
 
     $("a.dropdown-toggle.user").prepend("<p style='display: inline-block;'>{0}</p>".replace("{0}",$.jStorage.get("user")))
@@ -176,7 +176,7 @@ $(document).ready(function(){
     })
 
      $("#sign_out").click(function(){
-       window.location = "spos/";
+       window.location = window.location.origin;
        $.jStorage.deleteKey("user")
        $.jStorage.deleteKey("domain")
        $.jStorage.deleteKey("email")
@@ -667,7 +667,7 @@ function show_order_submission_message(){
 
 function check_for_internet_connectivity(){
   var xhr = new ( window.ActiveXObject || XMLHttpRequest )( "Microsoft.XMLHTTP" );
-  xhr.open( "HEAD","http://spos/", false)
+  xhr.open( "HEAD", window.location.origin, false)
   try {
         xhr.send();
         if ( xhr.status >= 200 && (xhr.status < 300 || xhr.status === 304) ){

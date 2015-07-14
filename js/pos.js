@@ -233,8 +233,8 @@ $(document).ready(function(){
 
     init_for_item_span_trigger()
     init_for_sub_category_span_trigger()
-    init_for_vendor_span_trigger()
-    init_for_customer_span_trigger()
+    // init_for_vendor_span_trigger()
+    // init_for_customer_span_trigger()
     create_orders_from_jstorage_data()
 
   });
@@ -665,6 +665,7 @@ function create_order_data(){
   this.order_dict[time_stamp]["supplier"] = $("[name=vendor][type=text]").val() 
   this.order_dict[time_stamp]["selling_price_list"] = $.jStorage.get("price_list")
   this.order_dict[time_stamp]["grand_total"] = $("#grand_total").text()
+  this.order_dict[time_stamp]["order_domain"] = $.jStorage.get("domain")
   this.order_dict[time_stamp]["items"] = []
   var me = this
   $.each($("#cart_body").children(),function(index,value){

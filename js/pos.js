@@ -1,31 +1,41 @@
 var image_object = {
 
-    "a":["../images/letters/blue/letters_s-1.png"],
-     "b":["../images/letters/blue/letters_s-2.png"],
-     "c":["../images/letters/blue/letters_s-3.png"],
-      "d":["../images/letters/blue/letters_s-4.png"],
-     "e":["../images/letters/blue/letters_s-5.png"],
-     "f":["../images/letters/blue/letters_s-6.png"],
-      "g":["../images/letters/blue/letters_s-7.png"],
-     "h":["../images/letters/blue/letters_s-8.png"],
-     "i":["../images/letters/blue/letters_s-9.png",],
-      "j":["../images/letters/blue/letters_s-10.png"],
-     "k":["../images/letters/blue/letters_s-11.png"],
-     "l":["../images/letters/blue/letters_s-12.png"],
-      "m":["../images/letters/blue/letters_s-13.png"],
-     "n":["../images/letters/blue/letters_s-14.png"],
-     "o":["../images/letters/blue/letters_s-15.png"],
-      "p":["../images/letters/blue/letters_s-16.png"],
-     "q":["../images/letters/blue/letters_s-17.png"],
-     "r":["../images/letters/blue/letters_s-18.png"],
-      "s":["../images/letters/blue/letters_s-19.png"],
-     "t":["../images/letters/blue/letters_s-20.png"],
-     "u":["../images/letters/blue/letters_s-21.png"],
-      "v":["../images/letters/blue/letters_s-22.png"],
-     "w":["../images/letters/blue/letters_s-23.png"],
-     "x":["../images/letters/blue/letters_s-24.png"],
-    "y":["../images/letters/blue/letters_s-25.png"],
-    "z":["../images/letters/blue/letters_s-26.png"]
+"a":["../images/letters/blue/letters_s-1.png"],
+"b":["../images/letters/blue/letters_s-2.png"],
+"c":["../images/letters/blue/letters_s-3.png"],
+"d":["../images/letters/blue/letters_s-4.png"],
+"e":["../images/letters/blue/letters_s-5.png"],
+"f":["../images/letters/blue/letters_s-6.png"],
+"g":["../images/letters/blue/letters_s-7.png"],
+"h":["../images/letters/blue/letters_s-8.png"],
+"i":["../images/letters/blue/letters_s-9.png",],
+"j":["../images/letters/blue/letters_s-10.png"],
+"k":["../images/letters/blue/letters_s-11.png"],
+"l":["../images/letters/blue/letters_s-12.png"],
+"m":["../images/letters/blue/letters_s-13.png"],
+"n":["../images/letters/blue/letters_s-14.png"],
+"o":["../images/letters/blue/letters_s-15.png"],
+"p":["../images/letters/blue/letters_s-16.png"],
+"q":["../images/letters/blue/letters_s-17.png"],
+"r":["../images/letters/blue/letters_s-18.png"],
+"s":["../images/letters/blue/letters_s-19.png"],
+"t":["../images/letters/blue/letters_s-20.png"],
+"u":["../images/letters/blue/letters_s-21.png"],
+"v":["../images/letters/blue/letters_s-22.png"],
+"w":["../images/letters/blue/letters_s-23.png"],
+"x":["../images/letters/blue/letters_s-24.png"],
+"y":["../images/letters/blue/letters_s-25.png"],
+"z":["../images/letters/blue/letters_s-26.png"],
+"0":["../images/letters/blue/letters_s-1.png"],
+"1":["../images/letters/blue/letters_s-2.png"],
+"2":["../images/letters/blue/letters_s-3.png"],
+"3":["../images/letters/blue/letters_s-4.png"],
+"4":["../images/letters/blue/letters_s-5.png"],
+"5":["../images/letters/blue/letters_s-6.png"],
+"6":["../images/letters/blue/letters_s-7.png"],
+"7":["../images/letters/blue/letters_s-8.png"],
+"8":["../images/letters/blue/letters_s-9.png",],
+"9":["../images/letters/blue/letters_s-10.png"],
 
 }
 
@@ -38,9 +48,9 @@ $(document).ready(function(){
     if(!$.jStorage.get("user")){
        window.location = window.location.origin;
     }
-
     $("a.dropdown-toggle.user").prepend("<p style='display: inline-block;'>{0}</p>".replace("{0}",$.jStorage.get("user")))
-      
+     $("#company").html("<b>{0}</b>".replace("{0}",$.jStorage.get("company")))
+
     $.each($.jStorage.get("customer"),function(index,value){
     	$("body").find('select[id=customer]').append("<option>{0}</option>".replace("{0}",value.customer_id))
 
@@ -63,8 +73,8 @@ $(document).ready(function(){
 
    $('.combobox').combobox()
 
-    render_thumbnails($.jStorage.get("item"))
-
+    // render_thumbnails($.jStorage.get("item"))
+   setTimeout(function () {waitingDialog.hide();},8000) 
         
     $('#exampleModal').on('show.bs.modal', function (event) {
         var thumbnail = $(event.relatedTarget) // div that triggered the modal
@@ -83,7 +93,8 @@ $(document).ready(function(){
     })
 
     $('#exampleModal').on('shown.bs.modal', function (event) {
-      $("#modal_item_quantity").focus()
+       $("#modal_item_quantity").focus()
+       $("#modal_item_quantity").select()
     })
 
 
@@ -98,10 +109,10 @@ $(document).ready(function(){
            $("#cart_body").find("[item_code='{0}']".replace("{0}",String(item_code))).find("#quantity").val(quantity)
            $("#cart_body").find("[item_code='{0}']".replace("{0}",String(item_code))).attr("quantity",quantity)
         }else{
-             $("#cart_body").append('<div class="row pos-bill-row pos-bill-item" item_code="'+item_code+'" description="'+description+'" cost="'+cost+'"  quantity='+quantity+'>\
+             $("#cart_body").prepend('<div class="row pos-bill-row pos-bill-item" item_code="'+item_code+'" description="'+description+'" cost="'+cost+'"  quantity='+quantity+'>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><h5>'+item_code+'</h5></div>\
                                 <div class="col-md-4 col-sm-4 col-xs-4"><h5>'+description+'</h5></div>\
-                                <div class="col-md-2 col-sm-2 col-xs-2"><input type="number" class="form-control" placeholder="Qty" value='+quantity+' id="quantity" min="0" onkeypress="return isNumberKey(event)" style="width:100%"></div>\
+                                <div class="col-md-2 col-sm-2 col-xs-2"><input type="number" class="form-control" placeholder="Qty" value='+quantity+' id="quantity" min="1" step=1 onkeypress="return isNumberKey(event)" style="width:100%"></div>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><h5>'+cost+'</h5></div>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><div class="cancel"><span class="glyphicon glyphicon-trash" style="padding-top:10px;"></span></div></div>\
                                 </div>')
@@ -128,49 +139,50 @@ $(document).ready(function(){
    $("[name=vendor][type=text]").change(function(){
         check_for_render_thumbnails()
         if(!$(this).val()){
-            check_for_render_thumbnails()
+           execute_vendor_remove_span_trigger()
         }
 
 
     })
 
-
-  
+    $("[name=customer][type=text]").change(function(){
+        if(!$(this).val()){
+          execute_customer_remove_span_trigger()
+        }
+    })
 
     $("[name=sub_category][type=text]").change(function(){
         check_for_render_thumbnails()
-        if(!$(this).val()){
-           check_for_render_thumbnails()
-        }
 
     })
 
 
-
     $("[name=item][type=text]").change(function(){
-        // $("[name=item][type=text]").siblings("span").find("span:first").attr("check","deactive")
         item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
         if(item_dict.length){
           render_thumbnails(item_dict)
         }         
         else if(!$(this).val()){
-
            check_for_render_thumbnails()
         }
-
 
     })
 
       $("[name=item][type=text]").keypress(function(){
-         execute_item_search_span_trigger()
          validate_for_vendor_selection_on_item_selection()
+         execute_item_search_span_trigger()
+         
       })
  
+      $("[name=sub_category][type=text]").keypress(function(){
+         execute_sub_category_search_span_trigger()
+         
+      })
 
     $("#submit_order").click(function(){
         return_value = validate_for_customer_and_vendor_selection()
-        if (return_value == false && $("#cart_body").children().length !=0){
-          
+        validate_cart_body_empty()
+        if (return_value == false && $("#cart_body").children().length !=0){          
           create_and_submit_order_data()
         }
     })
@@ -182,10 +194,47 @@ $(document).ready(function(){
        $.jStorage.deleteKey("email")
     })
 
-     
+    $("#auto_sync").click(function(){
+       $("#auto_sync_model").modal('show')
+       $("#auto_sync_model").find(".modal-title").text("Update System")
+       $("#auto_sync_model").find('.modal-body').html('<b>Are you sure you want to update the system ?</b>')
+       $("#auto_sync_model").find('.modal-footer').html('<button type="submit" class="btn btn-success" id="continue_auto_sync">Continue</button><button type="submit" class="btn btn-primary" id="cancel_auto_sync">Cancel</button>')
+
+    })
+
+    $(document).on("click","#continue_auto_sync",function(){
+      start_auto_sync()
+    })
+
+    $(document).on("click","#cancel_auto_sync",function(){
+      $("#auto_sync_model").modal("hide")
+    })
+
+   
+
+    // $("#cancel_auto_sync").click(function(){
+    //   $("#auto_sync_model").modal("hide")
+    // })
+
+    // $("#cancel_auto_sync").click(function(){
+    //   $("#auto_sync_model").modal("hide")
+    // })
+
+    $("#modal_item_quantity").keypress(function(args){
+        if (args.keyCode == 13) {
+          $('#add_to_cart').click();
+          return false;
+      }
+    })
+
+    $("#brand").click(function(){
+      window.location.reload()
+    })
+
     init_for_item_span_trigger()
     init_for_sub_category_span_trigger()
-    init_for_vendor_span_trigger()
+    // init_for_vendor_span_trigger()
+    // init_for_customer_span_trigger()
     create_orders_from_jstorage_data()
 
   });
@@ -193,9 +242,7 @@ $(document).ready(function(){
 
 
 function init_for_sorted_item_rendering(item_list){
-
-    $("body").find('ul[id=item]').empty()
-    $("body").find('select[id=item]').empty()
+    flush_select_ul_fields_for_data("item")
     $.each(item_list,function(index,value){
         $("body").find('select[id=item]').append("<option>{0}</option>".replace("{0}",value))
 
@@ -207,41 +254,41 @@ function init_for_sorted_item_rendering(item_list){
 
 
 function init_for_all_item_rendering(){
-    $("body").find('ul[id=item]').empty()
-    $("body").find('select[id=item]').empty()
-    append_all_items_to_select()
-    append_all_items_to_ul()
-
+  flush_select_ul_fields_for_data("item")
+  append_all_items_to_select()
+  append_all_items_to_ul()
 
 }
 
+function flush_select_ul_fields_for_data(data_name){
+  $("body").find('ul[id={0}]'.replace("{0}",data_name)).empty()
+  $("body").find('select[id={0}]'.replace("{0}",data_name)).empty()
+}
 
-
-function execute_common_sub_category_rendering(subcategory_list){
-  $("body").find('ul[id=sub_category]').empty()
-  $("body").find('select[id=sub_category]').empty()
-  $.each(subcategory_list,function(index,value){
-      $("body").find('select[id=sub_category]').append("<option>{0}</option>".replace("{0}",value))
+function execute_common_data_rendering(data_list,data_name){
+  flush_select_ul_fields_for_data(data_name)
+  $.each(data_list,function(index,value){
+      $("body").find('select[id={0}]'.replace("{0}",data_name)).append("<option>{0}</option>".replace("{0}",value))
 
     })
-  append_subcategory_list_to_ul(subcategory_list)
-  $('select[id=sub_category]').my_combobox(subcategory_list);
+  append_data_list_to_ul(data_list,data_name)
+  $('select[id={0}]'.replace("{0}",data_name)).my_combobox(data_list);
 }
 
 
 
-function append_subcategory_list_to_ul(subcategory_list){
-  $.each(subcategory_list,function(index,value){
-      strong_tag = create_custom_ul_for_sub_category(value)
-       $("body").find('ul[id=sub_category]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
+function append_data_list_to_ul(data_list,data_name){
+  $.each(data_list,function(index,value){
+      strong_tag = create_custom_ul_for_data(value)
+       $("body").find('ul[id={0}]'.replace("{0}",data_name)).append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
 
   }) 
 
 }
 
-function create_custom_ul_for_sub_category(sub_category){
+function create_custom_ul_for_data(data){
   var strong_tag = ''
-  $.each(sub_category.split(''),function(index,value){
+  $.each(data.split(''),function(index,value){
       strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value)
   })
   return strong_tag
@@ -271,18 +318,17 @@ function append_all_items_to_select(){
 function append_all_items_to_ul(){
      item_list = []   
      $.each($.jStorage.get("item"),function(index,value){
-        strong_tag = create_custom_ul(value)
-         $("body").find('ul[id=item]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
-           item_list.push(value.item_code)
+        strong_tag = create_custom_ul(value.item_code,value.item_description)
+        $("body").find('ul[id=item]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
+        item_list.push(value.item_code)
     })
      $('select[id=item]').my_combobox(item_list);
 }
 
 function append_item_list_to_ul(item_list){
-    item_dict = get_item_dict_from_item_list(item_list)
-    
-     $.each(item_dict,function(index,value){
-        strong_tag = create_custom_ul(value)
+    item_dict = get_item_dict_from_item_list(item_list)    
+    $.each(item_dict,function(index,value){
+        strong_tag = create_custom_ul(value.item_code,value.item_description)
          $("body").find('ul[id=item]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
 
 
@@ -301,14 +347,13 @@ function get_item_dict_from_item_list(item_list){
   return item_dict
 }
 
-function create_custom_ul(value){
-    my_str = value.item_code
+function create_custom_ul(value_name,value_desc){
     strong_tag = ''
-    $.each(my_str.split(''),function(index,value){
+    $.each(value_name.split(''),function(index,value){
         strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value)
     })
     strong_tag = strong_tag + "<br><p style='font-size:12px'>"
-    $.each(value.item_description.split(''),function(index,value){
+    $.each(value_desc.split(''),function(index,value){
         strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value) 
     })
 
@@ -426,6 +471,7 @@ function execute_item_search_span_trigger(){
       item_list = get_item_against_this_vendor($("[name=vendor][type=text]").val())
       init_for_sorted_item_rendering(item_list)
     }
+
 }
 
 
@@ -463,11 +509,11 @@ function execute_sub_category_search_span_trigger(){
       item_list = get_item_against_this_vendor($("[name=vendor][type=text]").val())
       sub_category_list = get_sub_category_against_item_list(item_list)
       sub_category_list = $.unique(sub_category_list)
-      execute_common_sub_category_rendering(sub_category_list)
+      execute_common_data_rendering(sub_category_list,"sub_category")
     }
     else if(!$("[name=vendor][type=text]").val()){
       sub_category_list = $.jStorage.get("item_group")
-       execute_common_sub_category_rendering(sub_category_list)
+       execute_common_data_rendering(sub_category_list,"sub_category")
 
     }   
 
@@ -475,21 +521,39 @@ function execute_sub_category_search_span_trigger(){
 }
 
 
-function init_for_vendor_span_trigger(){
-
-
-    $("[name=vendor][type=text]").siblings("span").on("click","",function(){
-       if (  $("[name=vendor][type=text]").siblings("span").find("span:first").attr("check") != "active" ){
-              execute_vendor_remove_span_trigger()
+// function init_for_vendor_span_trigger(){
+//     $("[name=vendor][type=text]").siblings("span").on("click","",function(){
+//        if (  $("[name=vendor][type=text]").siblings("span").find("span:first").attr("check") != "active" ){
+//               // execute_vendor_remove_span_trigger()
         
-        }
-    }); 
+//         }
+//     }); 
+
+// }
 
 
+// function init_for_customer_span_trigger(){
+//     $("[name=customer][type=text]").siblings("span").on("click","",function(){
+//        if (  $("[name=customer][type=text]").siblings("span").find("span:first").attr("check") != "active" ){
+              
+             
+        
+//         }
+//     }); 
+
+// }
+
+function execute_customer_remove_span_trigger(){
+      $("#cart_body").empty() 
 }
 
-function execute_vendor_remove_span_trigger(){   
-         check_for_render_thumbnails()   
+function execute_vendor_remove_span_trigger(){
+    $('.item_thumnails').empty()
+    $("#cart_body").empty()
+    $("[name=item][type=text]").val("")
+    $("[name=sub_category][type=text]").val("")
+    $("[name=item][type=hidden]").parent().removeClass("combobox-selected")
+    $("[name=sub_category][type=hidden]").parent().removeClass("combobox-selected")   
 
 }
 
@@ -497,18 +561,17 @@ function execute_vendor_remove_span_trigger(){
 
 
 function check_for_render_thumbnails(){
-
     if ($("[name=vendor][type=text]").val() &&  !$("[name=sub_category][type=text]").val()  && !$("[name=item][type=text]").val()){
         item_list = get_item_against_this_vendor($("[name=vendor][type=text]").val())
         item_dict = get_item_dict_from_item_list(item_list)
         render_thumbnails(item_dict)
     }
 
-    else if ($("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
-        item_list = get_item_against_this_sub_category($("[name=sub_category][type=text]").val())
-        item_dict = get_item_dict_from_item_list(item_list)
-        render_thumbnails(item_dict)
-    }
+    // else if ($("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
+    //     item_list = get_item_against_this_sub_category($("[name=sub_category][type=text]").val())
+    //     item_dict = get_item_dict_from_item_list(item_list)
+    //     render_thumbnails(item_dict)
+    // }
 
     else if ($("[name=sub_category][type=text]").val() &&  $("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
         item_list = get_item_against_this_sub_category_and_vendor($("[name=sub_category][type=text]").val() ,$("[name=vendor][type=text]").val())
@@ -516,10 +579,10 @@ function check_for_render_thumbnails(){
         render_thumbnails(item_dict)
     }
 
-    else if (!$("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
-         render_thumbnails($.jStorage.get("item"))
+    // else if (!$("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
+    //      render_thumbnails($.jStorage.get("item"))
 
-    }
+    // }
 
 
 }
@@ -527,12 +590,16 @@ function check_for_render_thumbnails(){
 function render_thumbnails(item_dict){
 
     $('.item_thumnails').empty()
+    var default_img = "../vendor/images/thumb-default.gif"
+    if ($("[name=vendor][type=text]").val()){
+      var initial =  $("[name=vendor][type=text]").val()[0].toLowerCase()
+      default_img = image_object[initial][0]
+    }
     $.each(item_dict,function(index,value){
-    var initial = value.item_description[0].toLowerCase()
     $('.item_thumnails').append('<div class="col-sm-4 col-md-3 col-xs-6">\
                         <div class="thumbnail"    data-toggle="modal" data-target="#exampleModal" data-item_code="'+value.item_code+'" data-description="'+value.item_description+'" >\
                         <div  class="thumbnail-img">\
-                        <img style="width:60px;height:60px" src='+image_object[initial][0]+'></img>\
+                        <img style="width:60px;height:60px" src='+default_img+'></img>\
                         </div>\
                         <div>\
                               <p style="text-align:center;padding-top:5px"><b >'+value.item_code+'</b></p>\
@@ -565,25 +632,18 @@ function validate_for_customer_and_vendor_selection(){
 }
 
 
-function set_pos_required_data_in_jstorage(){
-  var key_list = ["customer","vendor","item_group","item"]
-  $.each(key_list,function(index,value){
-     $.jStorage.set(value,pos_required_data[value])    
-  })
-}
-
 
 function validate_for_vendor_selection_on_item_selection(){
 
     if(!$("[name=vendor][type=text]").val()){
-        $('#validate_model').modal("show")
-         $('#validate_model').find('.modal-body').text('Please Select Vendor for Item Selection')
+        show_message('Please Select Vendor for Item Selection')
     }
 
 }
 
 
 function create_and_submit_order_data(){
+   call_block_ui()
    order_dict = create_order_data() 
 
   if ($.jStorage.get("orders") === null){
@@ -605,6 +665,7 @@ function create_order_data(){
   this.order_dict[time_stamp]["supplier"] = $("[name=vendor][type=text]").val() 
   this.order_dict[time_stamp]["selling_price_list"] = $.jStorage.get("price_list")
   this.order_dict[time_stamp]["grand_total"] = $("#grand_total").text()
+  this.order_dict[time_stamp]["order_domain"] = $.jStorage.get("domain")
   this.order_dict[time_stamp]["items"] = []
   var me = this
   $.each($("#cart_body").children(),function(index,value){
@@ -625,31 +686,35 @@ function init_for_so_po_creation(order_dict){
   if (connection_flag == true){
         var arg = {}
         arg['order_dict'] = JSON.stringify(order_dict);
-        arg['email'] = JSON.stringify($.jStorage.get("email"))
+        arg['email'] = $.jStorage.get("email")
           $.ajax({
               method: "POST",
               url: "http://{0}/api/method/spos.spos.spos_api.create_so_and_po".replace("{0}",$.jStorage.get("domain")),
               data: arg,
-              timeout:7000,
+              timeout:15000,
               dataType: "json",
               success:function(r){
                 if (r.message == 'fail'){
                   store_order_in_jstorage(order_dict)  
                 }
-                show_order_submission_message()  
-                
+                waitingDialog.hide();
+                show_message('Order Submitted Successfully')  
+                clear_accounting_data_after_submission() 
               },
               error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.log(textStatus)
                 store_order_in_jstorage(order_dict)
-                show_order_submission_message()
+                waitingDialog.hide();
+                show_message('Order Submitted Successfully')
+                clear_accounting_data_after_submission() 
               }
             });
   }
   else if(connection_flag == false)
   {
     store_order_in_jstorage(order_dict)
-    show_order_submission_message() 
+    waitingDialog.hide();
+    show_message('Order Submitted Successfully')
+    clear_accounting_data_after_submission() 
   }
 }
 
@@ -659,11 +724,18 @@ function store_order_in_jstorage(order_dict){
   $.jStorage.set("orders",item_list) 
 }
 
-function show_order_submission_message(){
+function show_message(message){
   $('#validate_model').modal("show")
-  $('#validate_model').find('.modal-body').text('Order Submitted Successfully')
+  $('#validate_model').find('.modal-body').text(message)
 }
 
+function validate_cart_body_empty(){
+  if (!$("#cart_body").children().length){
+      $('#validate_model').modal("show")
+      $('#validate_model').find('.modal-body').text('Empty Cart Area Found') 
+  }
+  
+}
 
 function check_for_internet_connectivity(){
   var xhr = new ( window.ActiveXObject || XMLHttpRequest )( "Microsoft.XMLHTTP" );
@@ -687,7 +759,7 @@ function create_orders_from_jstorage_data(){
         init_for_so_po_creation_from_jstorage()
       }
 
-    },100000)
+    },600000)
 }
 
 function init_for_so_po_creation_from_jstorage(){
@@ -706,12 +778,13 @@ function init_for_so_po_creation_from_jstorage(){
 function execute_so_po_creation_from_jstorage(order_dict){
     var arg = {}
     arg['order_dict'] = JSON.stringify(order_dict);
-    arg['email'] = JSON.stringify($.jStorage.get("email"))
+    arg['email'] = $.jStorage.get("email")
+    arg['sync'] = 1
     $.ajax({
           method: "POST",
           url: "http://{0}/api/method/spos.spos.spos_api.create_so_and_po".replace("{0}",$.jStorage.get("domain")),
           data: arg,
-          timeout:7000,
+          timeout:15000,
           dataType: "json",
           success:function(r){
             if (r.message == 'success'){
@@ -735,4 +808,93 @@ function remove_order_from_jstorage(order_dict){
         } 
 
     });
+}
+
+
+function call_block_ui(){
+ waitingDialog.show('Please wait.......', {dialogSize: 'lg'});
+}
+
+
+function clear_accounting_data_after_submission(){
+  execute_vendor_remove_span_trigger()
+  $("[name=vendor][type=hidden]").parent().removeClass("combobox-selected")
+  $("[name=vendor][type=text]").val("")
+
+}
+
+
+function start_auto_sync(){
+  $("#auto_sync_model").modal("hide")
+  connection_flag = check_for_internet_connectivity()
+    if (connection_flag == true){
+    waitingDialog.show('Sync in progress.Please wait........', {dialogSize: 'lg'});
+    $.ajax({
+          method: "GET",
+          url: "http://"+$.jStorage.get("domain")+"/api/method/spos.spos.spos_api.get_pos_required_data?sales_user="+$.jStorage.get("email"),
+          dataType: "json",
+          timeout:10000,
+          success:function(result){
+            set_pos_required_data_in_jstorage(result.message)
+            init_for_required_data_rendering()
+            setTimeout(function () {waitingDialog.hide();},1000) 
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown){
+            setTimeout(function () {waitingDialog.hide();},1000) 
+            show_message('Sync failed due to server is taking lot of time.Please try later.')
+            window.location = "../"
+          }
+    }); 
+  }
+  else if(connection_flag == false){
+       show_message('Sync failed due to unavailablity of internet connectivity')
+  }  
+}
+
+
+
+function set_pos_required_data_in_jstorage(pos_required_data){
+  var key_list = ["customer","vendor","item_group","item","price_list","company"]
+  $.each(key_list,function(index,value){
+     $.jStorage.set(value,pos_required_data[value])    
+  })
+}
+
+
+function init_for_required_data_rendering(){
+  init_for_all_item_rendering()
+  execute_common_data_rendering($.jStorage.get("item_group"),"sub_category")
+  vendor_list = get_vendor_list($.jStorage.get("vendor"))
+  execute_common_data_rendering(vendor_list,"vendor")
+  init_for_all_customer_rendering()
+}
+
+function get_vendor_list(vendor_dict){
+  vendor_list = []
+  $.each(vendor_dict,function(index,value){
+    vendor_list.push(value.vendor_id)
+  })
+  return vendor_list
+}
+
+function init_for_all_customer_rendering(){
+  flush_select_ul_fields_for_data("customer")
+  append_all_customer_to_select()
+  append_all_customer_to_ul()
+}
+
+function append_all_customer_to_select(){
+  $.each($.jStorage.get("customer"),function(index,value){
+      $("body").find('select[id=customer]').append("<option>{0}</option>".replace("{0}",value.customer_id))
+  })
+}
+
+function append_all_customer_to_ul(){
+  cust_list = []   
+  $.each($.jStorage.get("customer"),function(index,value){
+    strong_tag = create_custom_ul(value.customer_id,value.customer_name)
+    $("body").find('ul[id=customer]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.customer_id))
+    cust_list.push(value.customer_id)
+  })
+  $('select[id=customer]').my_combobox(cust_list);
 }

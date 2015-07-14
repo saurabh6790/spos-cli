@@ -5,14 +5,14 @@
 		<title>SPOS</title>
 		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="/css/pos.css">
-		<link  rel="stylesheet" href="/js/bootstrap-combobox-master/css/bootstrap-combobox.css"></link>
-
+		<link rel="stylesheet" href="../css/pos.css">
+		<link  rel="stylesheet" href="../js/bootstrap-combobox-master/css/bootstrap-combobox.css"></link>
 		<script type="text/javascript" src="../js/jquery/jquery.min.js"></script>	
 		<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>	
 		<script src="../js/jStorage-master/jstorage.js"></script>
 		<script src="../js/bootstrap-combobox-master/js/bootstrap-combobox.js"></script>
 		<script src="../js/pos.js"></script>
+		<script src="../js/jquery/bootstrap-waitingfor.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	</head>
@@ -33,15 +33,16 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				
 				<ul class="nav navbar-nav">
-					<li><a><img alt="Brand" src="../vendor/images/brand.png" style="width:60px;height:35px"></a> </li>
-					<li> <a href="#" title="Home Page">Home</a> </li>	
-					<li> <a href="#" title="Company Name">Company</a>  </li>
+					<li><a><img alt="Brand" id="brand" src="../vendor/images/brand.png" style="width:60px;height:35px">	
+					 </a> </li>
+					<li> <a href="#" title="Company Name" id="company">Company</a>  </li>
 				</ul>	
 				
 				<ul class="nav navabar-nav navbar-right">
 					<li class="dropdown">	
 					<a href="#" class="dropdown-toggle user" data-toggle="dropdown"> <b class="caret"></b></a>	
 						<ul class="dropdown-menu">
+							<li> <a href="#" id="auto_sync">Update System</a> </li>
 							<li> <a href="#" id="sign_out">Sign Out</a> </li>
 						</ul>	
 					</li>	
@@ -79,18 +80,13 @@
 		<div class="container margin">
 			<div class="row" style="border:1px solid rgb(218, 217, 217)">
 				<div class="col-md-6 col-sm-6 col-xs-12 col-color" style="text-align:center">
-					<h5>Products</h5>
-				</div>	
-				<div class="col-md-6 col-sm-6 col-xs-12 col-color" style="text-align:center">
-					<h5>Collection Area</h5>
-				</div>	
-			</div>
-			<div class="row" style="border:1px solid rgb(218, 217, 217)">
-				<div class="col-md-6 col-sm-6 col-xs-12 col-color" >
-					<div class="row item_thumnails margin" style="width:100%;min-height:380px;">
+					<div class="pos-bill-toolbar row"><h5>Products</h5></div>
+					<div class="row item_thumnails margin" style="width:100%;max-height:400px;">
 					</div>	
 				</div>	
-				<div class="col-md-6 col-sm-6 col-xs-12 col-color" style="min-height:420px">
+				<div class="col-md-6 col-sm-6 col-xs-12 col-color" style="text-align:center">
+					<div class="row pos-item-toolbar"><h5>Collection Area</h5></div>
+					<div class="col-color" style="max-height:400px">
 						<div class="pos-bill margin">
 							<div class="item-cart">
 								<div class="row pos-bill-row pos-bill-header">
@@ -100,13 +96,13 @@
 									<div class="col-md-2 col-sm-2 col-xs-2"><h5>Price</h5></div>
 									<div class="col-md-2 col-sm-2 col-xs-2"></div>
 								</div>
-								<div class="items" id="cart_body" style="width:100%;height:250px;">
+								<div class="items" id="cart_body" style="width:100%;height:270px;">
 								</div>	
 							</div>
 							<div class="totals-area margin" style="margin-right:10px">
 								<div class="row pos-bill-row grand-total-area">
-									<div class="col-md-6 col-sm-6 col-xs-6">
-										<h5>Grand Total:</h5>
+									<div class="col-md-6 col-sm-6 col-xs-6 text-left">
+										<h5 >Grand Total:</h5>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-6">
 										<h6 class="text-right" id="grand_total"><b>0</b></h6>
@@ -114,8 +110,8 @@
 								</div>	
 							</div>	
 						</div>	
-				</div>		
-
+					</div>
+				</div>	
 			</div>
 			<div class="row" style="border:1px solid rgb(218, 217, 217)">
 				<div class="col-md-12 col-sm-12 col-xs-12 col-color" style="text-align:right" >
@@ -144,7 +140,7 @@
           				</div>
           				<div class="form-group">
             				<label class="control-label">Quantity:</label>
-            				<input type="number"  id="modal_item_quantity" placeholder="Quantity" min="0" onkeypress="return isNumberKey(event)" class="form-control" autofocus required>
+            				<input type="number"  id="modal_item_quantity" placeholder="Quantity" min="1" step=1 onkeypress="return isNumberKey(event)" class="form-control" autofocus required>
           				</div>
         			</form>
       			</div>
@@ -168,6 +164,22 @@
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
+	<div class="modal fade" id="auto_sync_model">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title"></h4>
+	      </div>
+	      <div class="modal-body">
+	      	
+	      </div>
+	      <div class="modal-footer">
+      	 	
+      	 </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
 
 		</div>		

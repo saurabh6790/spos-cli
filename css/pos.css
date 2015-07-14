@@ -5,8 +5,9 @@
 body {
     height: 100%;
     background-repeat: no-repeat;
-    background: -webkit-linear-gradient(top, rgb(104, 145, 162), rgb(12, 97, 33));
+    background: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
 }
+                                                                                                                                                                                                                                                                                      
 
 .pos-container-color{
 	background-color:rgba(64, 131, 160, 0.4); 
@@ -122,7 +123,6 @@ body {
   border-top: none;
 }
 .pos-item-toolbar {
-  padding: 10px 0px;
   border-bottom: 1px solid #d1d8dd;
 }
 .item-list-area {
@@ -130,9 +130,7 @@ body {
 }
 .pos-toolbar,
 .pos-bill-toolbar {
-  padding: 10px 0px;
   border-bottom: 1px solid #d1d8dd;
-  height: 51px;
 }
 .pos-item-toolbar .form-group {
   margin-bottom: 0px;

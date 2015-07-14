@@ -264,9 +264,10 @@
     if (!this.disabled) { 
       if (this.$container.hasClass('combobox-selected')) {
         $(this.$button).find("span:first").attr("check","deactive")
-        this.clearTarget();
-        this.triggerChange();
-        this.clearElement();
+         this.validate_before_remove_trigger()
+          // this.clearTarget();
+          // this.triggerChange();
+          // this.clearElement();          
       } else {
          $(this.$button).find("span:first").attr("check","active")
         if (this.shown) {
@@ -298,6 +299,57 @@
   , triggerChange: function () {
     this.$source.trigger('change');
   }
+  
+  , validate_before_remove_trigger:function(){
+     if ($("#cart_body").children().length && (this.$source.attr("id") == 'vendor' || this.$source.attr("id") == 'customer') ){
+         $("#auto_sync_model").modal('show')
+         $("#auto_sync_model").find(".modal-title").text("Warning !!!!")
+         $("#auto_sync_model").find('.modal-body').html('<b>Collection area will be flushed, Are you sure you want continue ?</b> ')
+         $("#auto_sync_model").find('.modal-footer').html('<button type="submit" class="btn btn-success" id="flush_continue">Continue</button><button type="submit" class="btn btn-primary" id="cancel_auto_sync">Cancel</button>')
+         this.trigger_default_methods()
+      }
+      else{
+          this.clearTarget();
+          this.triggerChange();
+          this.clearElement();
+          if (this.$source.attr("id") == 'vendor'){
+            this.vendor_remove_span_trigger()
+          }
+      }
+    }
+  ,  trigger_default_methods :function(){
+      var me  = this
+      $("#flush_continue").click(function(){
+          $("#auto_sync_model").modal("hide")
+          me.clearTarget();
+          me.triggerChange();
+          me.clearElement();
+          if (me.$source.attr("id") == 'vendor' ){
+            me.vendor_remove_span_trigger()
+          }
+          else if(me.$source.attr("id") == 'customer'){
+            me.execute_customer_remove_span_trigger()
+          }
+      })
+      $("#flush_cancel").click(function(){
+          $(me.$container).find('ul').css("display","none")
+      })
+  
+   }
+
+   ,vendor_remove_span_trigger:function(){
+      $('.item_thumnails').empty()
+      $("#cart_body").empty()
+      $("[name=item][type=text]").val("")
+      $("[name=sub_category][type=text]").val("")
+      $("[name=item][type=hidden]").parent().removeClass("combobox-selected")
+      $("[name=sub_category][type=hidden]").parent().removeClass("combobox-selected")
+      $(this.$container).find('ul').css("display","none") 
+   }
+
+   ,execute_customer_remove_span_trigger:function(){
+      $("#cart_body").empty()
+   }
 
   , refresh: function () {
     this.source = this.parse();
@@ -358,6 +410,14 @@
     }
 
   , keydown: function (e) {
+      if ($("#cart_body").children().length && (this.$source.attr("id") == 'vendor' || this.$source.attr("id") == 'customer')){
+          if (e.keyCode == 8 || e.keyCode == 46){
+              e.preventDefault();
+              // this.$element.off('blur');
+              // this.validate_before_remove_trigger()
+          }
+      }
+
       this.suppressKeyPressRepeat = ~$.inArray(e.keyCode, [40,38,9,13,27]);
       this.move(e);
     }
@@ -390,7 +450,12 @@
           if (!this.shown) {return;}
           this.hide();
           break;
-
+        case 8:
+          if ($("#cart_body").children().length && (this.$source.attr("id") == 'vendor' || this.$source.attr("id") == 'customer') ){
+             this.validate_before_remove_trigger()
+             break; 
+          }
+           
         default:
           this.clearTarget();
           this.lookup();

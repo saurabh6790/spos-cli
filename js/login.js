@@ -31,16 +31,14 @@ function login(args){
   				url: "http://"+args['domain']+"/api/method/spos.spos.spos_api.get_pos_required_data?sales_user="+args['usr'],
  				dataType: "json",
  				success:function(result){
- 					console.log("dhsah")
- 					var pos_required_data
- 					pos_required_data = result.message
- 					set_pos_required_data_in_jstorage(pos_required_data)
+ 					set_pos_required_data_in_jstorage(result.message)
 					$.jStorage.set("user", r.full_name)
 					$.jStorage.set("domain",args['domain'])
 					$.jStorage.set("email",args['usr'])
 					window.location = "./pages/pos.html";
 				},
  				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					setTimeout(function () {waitingDialog.hide();},1000) 
 					alert("Can not load data")
 					window.location = "../"
 				}
@@ -57,7 +55,7 @@ function login(args){
 
 
 function set_pos_required_data_in_jstorage(pos_required_data){
-  var key_list = ["customer","vendor","item_group","item","price_list"]
+  var key_list = ["customer","vendor","item_group","item","price_list","company"]
   $.each(key_list,function(index,value){
      $.jStorage.set(value,pos_required_data[value])    
   })

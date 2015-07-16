@@ -60,3 +60,4 @@ function set_pos_required_data_in_jstorage(pos_required_data){
      $.jStorage.set(value,pos_required_data[value])    
   })
 }
+

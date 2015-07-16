@@ -738,8 +738,9 @@ function validate_cart_body_empty(){
 }
 
 function check_for_internet_connectivity(){
-  var xhr = new ( window.ActiveXObject || XMLHttpRequest )( "Microsoft.XMLHTTP" );
-  xhr.open( "HEAD", window.location.origin, false)
+  var xhr = new XMLHttpRequest();
+  xhr.open( "HEAD",window.location.origin,false);
+  var status;
   try {
         xhr.send();
         if ( xhr.status >= 200 && (xhr.status < 300 || xhr.status === 304) ){
@@ -763,15 +764,22 @@ function create_orders_from_jstorage_data(){
 }
 
 function init_for_so_po_creation_from_jstorage(){
-    $.each($.jStorage.get("orders"),function(index,value){
-      connection_flag = check_for_internet_connectivity()
-        if (connection_flag == true){          
-            execute_so_po_creation_from_jstorage(value)
+  $.each($.jStorage.get("orders"),function(index,value){
+     try {
+          if (value[Object.keys(value)[0]].order_domain == $.jStorage.get("domain")){
+              connection_flag = check_for_internet_connectivity()
+              if (connection_flag == true){          
+                  execute_so_po_creation_from_jstorage(value)
+              }
+              else if (connection_flag == false){
+                  return false
+              }
+            }  
         }
-        else if (connection_flag == false){
-            return false
-        }
-
+     catch (err){
+      console.log(err.message)
+     }   
+    
     })
 }
 

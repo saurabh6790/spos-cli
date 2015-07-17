@@ -738,19 +738,20 @@ function validate_cart_body_empty(){
 }
 
 function check_for_internet_connectivity(){
-  var xhr = new XMLHttpRequest();
-  xhr.open( "HEAD",window.location.origin,false);
-  var status;
-  try {
-        xhr.send();
-        if ( xhr.status >= 200 && (xhr.status < 300 || xhr.status === 304) ){
-          return true
-        };
-    } 
-    catch (error) {
-        return false
-    }
+ var flag
+ $.ajax({
+        type: "GET",
+        url: "http://{0}/api/method/spos.spos.spos_api.check_for_connectivity".replace("{0}",$.jStorage.get("domain")),
+        async: false,
+        success : function(data) {
+            flag = true
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown){
+            flag = false
+        } 
+    });
 
+ return flag
 }
 
 function create_orders_from_jstorage_data(){
@@ -760,7 +761,7 @@ function create_orders_from_jstorage_data(){
         init_for_so_po_creation_from_jstorage()
       }
 
-    },600000)
+    },300000)
 }
 
 function init_for_so_po_creation_from_jstorage(){
@@ -777,7 +778,6 @@ function init_for_so_po_creation_from_jstorage(){
             }  
         }
      catch (err){
-      console.log(err.message)
      }   
     
     })

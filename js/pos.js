@@ -48,6 +48,10 @@ $(document).ready(function(){
     if(!$.jStorage.get("user")){
        window.location = window.location.origin;
     }
+    if ($.jStorage.get("login_count") == 1){
+      waitingDialog.show('Welcome {0}.Please Wait while data is loading........'.replace("{0}",$.jStorage.get('user')), {dialogSize: 'md'});
+    }
+    
     $("a.dropdown-toggle.user").prepend("<p style='display: inline-block;'>{0}</p>".replace("{0}",$.jStorage.get("user")))
      $("#company").html("<b>{0}</b>".replace("{0}",$.jStorage.get("company")))
 
@@ -73,8 +77,11 @@ $(document).ready(function(){
 
    $('.combobox').combobox()
 
-    // render_thumbnails($.jStorage.get("item"))
-   setTimeout(function () {waitingDialog.hide();},8000) 
+    if ($.jStorage.get("login_count") == 1){
+       setTimeout(function () {waitingDialog.hide();},5000)
+       $.jStorage.set("login_count",2)  
+    }
+   
         
     $('#exampleModal').on('show.bs.modal', function (event) {
         var thumbnail = $(event.relatedTarget) // div that triggered the modal
@@ -820,7 +827,7 @@ function remove_order_from_jstorage(order_dict){
 
 
 function call_block_ui(){
- waitingDialog.show('Please wait.......', {dialogSize: 'lg'});
+ waitingDialog.show('Please wait.......', {dialogSize: 'md'});
 }
 
 
@@ -836,7 +843,7 @@ function start_auto_sync(){
   $("#auto_sync_model").modal("hide")
   connection_flag = check_for_internet_connectivity()
     if (connection_flag == true){
-    waitingDialog.show('Sync in progress.Please wait........', {dialogSize: 'lg'});
+    waitingDialog.show('Sync in progress.Please wait........', {dialogSize: 'md'});
     $.ajax({
           method: "GET",
           url: "http://"+$.jStorage.get("domain")+"/api/method/spos.spos.spos_api.get_pos_required_data?sales_user="+$.jStorage.get("email"),

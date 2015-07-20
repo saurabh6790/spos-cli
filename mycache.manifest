@@ -1,4 +1,7 @@
 CACHE MANIFEST
+NETWORK:
+*
+CACHE:
 /css/pos.css
 /css/style.css
 /vendor/bootstrap/css/bootstrap.min.css

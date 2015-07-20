@@ -297,6 +297,7 @@
   }
 
   , triggerChange: function () {
+    console.log("trigger change")
     this.$source.trigger('change');
   }
   
@@ -413,8 +414,6 @@
       if ($("#cart_body").children().length && (this.$source.attr("id") == 'vendor' || this.$source.attr("id") == 'customer')){
           if (e.keyCode == 8 || e.keyCode == 46){
               e.preventDefault();
-              // this.$element.off('blur');
-              // this.validate_before_remove_trigger()
           }
       }
 
@@ -428,6 +427,7 @@
     }
 
   , keyup: function (e) {
+      var flag ;
       switch(e.keyCode) {
         case 40: // down arrow
         case 39: // right arrow
@@ -451,11 +451,15 @@
           this.hide();
           break;
         case 8:
-          if ($("#cart_body").children().length && (this.$source.attr("id") == 'vendor' || this.$source.attr("id") == 'customer') ){
-             this.validate_before_remove_trigger()
-             break; 
-          }
-           
+          flag = this.check_if_backspace_or_delete_fired();
+          if (flag){
+             break;  
+          }          
+        case 46:
+          flag = this.check_if_backspace_or_delete_fired();
+          if (flag){
+             break;  
+          }    
         default:
           this.clearTarget();
           this.lookup();
@@ -463,6 +467,14 @@
 
       e.stopPropagation();
       e.preventDefault();
+  }
+
+  , check_if_backspace_or_delete_fired:function(){
+      if ($("#cart_body").children().length && (this.$source.attr("id") == 'vendor' || this.$source.attr("id") == 'customer') ){
+           this.validate_before_remove_trigger()
+           return true
+        }
+       return false     
   }
 
   , focus: function (e) {

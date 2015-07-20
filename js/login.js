@@ -25,7 +25,6 @@ function login(args){
 		url: "http://"+args['domain']+"/api/method/login?usr="+args['usr']+"&pwd="+args['pwd'],
 		dataType: "json",
 		success: function(r) {
-			waitingDialog.show('Welcome {0}.Please Wait while data is loading........'.replace("{0}", r.full_name), {dialogSize: 'lg'});
 			$.ajax({
  				method: "GET",
   				url: "http://"+args['domain']+"/api/method/spos.spos.spos_api.get_pos_required_data?sales_user="+args['usr'],
@@ -35,6 +34,7 @@ function login(args){
 					$.jStorage.set("user", r.full_name)
 					$.jStorage.set("domain",args['domain'])
 					$.jStorage.set("email",args['usr'])
+					$.jStorage.set("login_count",1)
 					window.location = "./pages/pos.html";
 				},
  				error: function(XMLHttpRequest, textStatus, errorThrown) {

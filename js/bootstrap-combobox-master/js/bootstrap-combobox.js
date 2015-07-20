@@ -297,7 +297,6 @@
   }
 
   , triggerChange: function () {
-    console.log("trigger change")
     this.$source.trigger('change');
   }
   

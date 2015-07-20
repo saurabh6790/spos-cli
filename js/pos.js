@@ -659,7 +659,6 @@ function create_and_submit_order_data(){
   }
 
   init_for_so_po_creation(order_dict)
-  console.log(order_dict)
 }
 
 
@@ -768,7 +767,7 @@ function create_orders_from_jstorage_data(){
         init_for_so_po_creation_from_jstorage()
       }
 
-    },300000)
+    },600000)
 }
 
 function init_for_so_po_creation_from_jstorage(){
@@ -848,7 +847,7 @@ function start_auto_sync(){
           method: "GET",
           url: "http://"+$.jStorage.get("domain")+"/api/method/spos.spos.spos_api.get_pos_required_data?sales_user="+$.jStorage.get("email"),
           dataType: "json",
-          timeout:10000,
+          timeout:15000,
           success:function(result){
             set_pos_required_data_in_jstorage(result.message)
             init_for_required_data_rendering()

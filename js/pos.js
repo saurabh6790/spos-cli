@@ -119,9 +119,9 @@ $(document).ready(function(){
              $("#cart_body").prepend('<div class="row pos-bill-row pos-bill-item" item_code="'+item_code+'" description="'+description+'" cost="'+cost+'"  quantity='+quantity+'>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><h5>'+item_code+'</h5></div>\
                                 <div class="col-md-4 col-sm-4 col-xs-4"><h5>'+description+'</h5></div>\
-                                <div class="col-md-2 col-sm-2 col-xs-2"><input type="number" class="form-control" placeholder="Qty" value='+quantity+' id="quantity" min="1" step=1 onkeypress="return isNumberKey(event)" style="width:100%"></div>\
+                                <div class="col-md-2 col-sm-2 col-xs-2 cart-row-padding"><input type="number" class="form-control" placeholder="Qty" value='+quantity+' id="quantity" min="1" step=1 onkeypress="return isNumberKey(event)" style="width:100%"></div>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><h5>'+cost+'</h5></div>\
-                                <div class="col-md-2 col-sm-2 col-xs-2"><div class="cancel"><span class="glyphicon glyphicon-trash" style="padding-top:10px;"></span></div></div>\
+                                <div class="col-md-1 col-sm-2 col-xs-2 cart-row-padding"><div class="cancel"><span class="glyphicon glyphicon-trash" style="padding-top:10px;"></span></div></div>\
                                 </div>')
 
         }       
@@ -603,7 +603,7 @@ function render_thumbnails(item_dict){
       default_img = image_object[initial][0]
     }
     $.each(item_dict,function(index,value){
-    $('.item_thumnails').append('<div class="col-sm-4 col-md-3 col-xs-6">\
+    $('.item_thumnails').append('<div class="col-sm-4 col-md-3 col-xs-6 thumbnail-padding">\
                         <div class="thumbnail"    data-toggle="modal" data-target="#exampleModal" data-item_code="'+value.item_code+'" data-description="'+value.item_description+'" >\
                         <div  class="thumbnail-img">\
                         <img style="width:60px;height:60px" src='+default_img+'></img>\

@@ -119,9 +119,9 @@ $(document).ready(function(){
              $("#cart_body").prepend('<div class="row pos-bill-row pos-bill-item" item_code="'+item_code+'" description="'+description+'" cost="'+cost+'"  quantity='+quantity+'>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><h5>'+item_code+'</h5></div>\
                                 <div class="col-md-4 col-sm-4 col-xs-4"><h5>'+description+'</h5></div>\
-                                <div class="col-md-2 col-sm-2 col-xs-2"><input type="number" class="form-control" placeholder="Qty" value='+quantity+' id="quantity" min="1" step=1 onkeypress="return isNumberKey(event)" style="width:100%"></div>\
+                                <div class="col-md-2 col-sm-2 col-xs-2 cart-row-padding"><input type="number" class="form-control" placeholder="Qty" value='+quantity+' id="quantity" min="1" max="999999999999" step=1 onkeypress="return isNumberKey(event)" style="width:100%"></div>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><h5>'+cost+'</h5></div>\
-                                <div class="col-md-2 col-sm-2 col-xs-2"><div class="cancel"><span class="glyphicon glyphicon-trash" style="padding-top:10px;"></span></div></div>\
+                                <div class="col-md-1 col-sm-2 col-xs-2 cart-row-padding"><div class="cancel"><span class="glyphicon glyphicon-trash" style="padding-top:10px;"></span></div></div>\
                                 </div>')
 
         }       
@@ -136,12 +136,29 @@ $(document).ready(function(){
         calculate_grand_total()
     })
 
-    $(document).on('input',"#quantity",function() { 
+    var max_chars =12;
+    $(document).on('input',"#quantity",function(e) { 
+      if ($(this).val().length >= 12) { 
+          $(this).val($(this).val().substr(0, max_chars));
+       }
        $(this).parent().parent().attr("quantity",$(this).val()) 
        calculate_grand_total()  
             
     });
 
+     $(document).on('keydown',"#quantity",function(e) {
+        if ( ( e.keyCode== 48 && !$(this).val() ) ||  ( $(this).val() >= 999999999999 && !check_for_provided_keys(e.keyCode)  )){
+          e.preventDefault();
+        }
+            
+    });
+
+
+    $(document).on('keydown',"#modal_item_quantity",function(e) {
+      if ( (e.keyCode== 48 && !$(this).val() ) || ( $(this).val() >= 999999999999 && !check_for_provided_keys(e.keyCode)  )  ){
+            e.preventDefault();
+        } 
+    });
 
    $("[name=vendor][type=text]").change(function(){
         check_for_render_thumbnails()
@@ -217,6 +234,17 @@ $(document).ready(function(){
       $("#auto_sync_model").modal("hide")
     })
 
+    $("#cust_address").click(function(){
+      if ($("[name=customer][type=text]").val()){
+        $("#validate_model").modal("show")
+         cust_address = get_customer_address()
+        $("#validate_model").find(".modal-title").text("Customer Address")
+        $("#validate_model").find(".modal-body").html("<textarea class='form-control' disabled rows='8'>{0}</textarea>".replace("{0}",cust_address))  
+      }else{
+        show_message("Please Select Customer First","Mandatory Field")
+      }
+      
+    })
    
 
     // $("#cancel_auto_sync").click(function(){
@@ -227,8 +255,13 @@ $(document).ready(function(){
     //   $("#auto_sync_model").modal("hide")
     // })
 
-    $("#modal_item_quantity").keypress(function(args){
-        if (args.keyCode == 13) {
+    $("#modal_item_quantity").keyup(function(args){
+      if ( !check_for_provided_keys(args.keyCode) ){
+        if ($(this).val().length >= 12) { 
+           $(this).val($(this).val().substr(0, max_chars));
+        }
+      }
+      if (args.keyCode == 13) {
           $('#add_to_cart').click();
           return false;
       }
@@ -237,14 +270,30 @@ $(document).ready(function(){
     $("#brand").click(function(){
       window.location.reload()
     })
+    
+    var d = new Date
+    $("#year").text("  "+d.getFullYear())
 
     init_for_item_span_trigger()
     init_for_sub_category_span_trigger()
     // init_for_vendor_span_trigger()
     // init_for_customer_span_trigger()
     create_orders_from_jstorage_data()
-
+    show_message_for_selection_of_vendor()
   });
+
+
+function get_customer_address(){
+    customer_dict =  $.grep($.jStorage.get("customer"),function(e){
+      return e.customer_id == $("[name=customer][type=text]").val()
+    })
+    if (customer_dict){
+      return customer_dict[0].cust_address ?  customer_dict[0].cust_address : "Customer Address Not Available"
+    }else{
+      return "Customer Address Not Available"
+    }
+
+}
 
 
 
@@ -531,7 +580,7 @@ function execute_sub_category_search_span_trigger(){
 // function init_for_vendor_span_trigger(){
 //     $("[name=vendor][type=text]").siblings("span").on("click","",function(){
 //        if (  $("[name=vendor][type=text]").siblings("span").find("span:first").attr("check") != "active" ){
-//               // execute_vendor_remove_span_trigger()
+//               show_message_for_selection_of_vendor()
         
 //         }
 //     }); 
@@ -560,7 +609,8 @@ function execute_vendor_remove_span_trigger(){
     $("[name=item][type=text]").val("")
     $("[name=sub_category][type=text]").val("")
     $("[name=item][type=hidden]").parent().removeClass("combobox-selected")
-    $("[name=sub_category][type=hidden]").parent().removeClass("combobox-selected")   
+    $("[name=sub_category][type=hidden]").parent().removeClass("combobox-selected")
+    show_message_for_selection_of_vendor()   
 
 }
 
@@ -585,11 +635,10 @@ function check_for_render_thumbnails(){
         item_dict = get_item_dict_from_item_list(item_list)
         render_thumbnails(item_dict)
     }
+    else if (!$("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
+           show_message_for_selection_of_vendor()        
 
-    // else if (!$("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
-    //      render_thumbnails($.jStorage.get("item"))
-
-    // }
+    }
 
 
 }
@@ -603,7 +652,7 @@ function render_thumbnails(item_dict){
       default_img = image_object[initial][0]
     }
     $.each(item_dict,function(index,value){
-    $('.item_thumnails').append('<div class="col-sm-4 col-md-3 col-xs-6">\
+    $('.item_thumnails').append('<div class="col-sm-4 col-md-3 col-xs-6 thumbnail-padding">\
                         <div class="thumbnail"    data-toggle="modal" data-target="#exampleModal" data-item_code="'+value.item_code+'" data-description="'+value.item_description+'" >\
                         <div  class="thumbnail-img">\
                         <img style="width:60px;height:60px" src='+default_img+'></img>\
@@ -643,7 +692,7 @@ function validate_for_customer_and_vendor_selection(){
 function validate_for_vendor_selection_on_item_selection(){
 
     if(!$("[name=vendor][type=text]").val()){
-        show_message('Please Select Vendor for Item Selection')
+        show_message('Please Select Vendor for Item Selection',"Mandatory Field")
     }
 
 }
@@ -659,7 +708,6 @@ function create_and_submit_order_data(){
   }
 
   init_for_so_po_creation(order_dict)
-  console.log(order_dict)
 }
 
 
@@ -673,6 +721,9 @@ function create_order_data(){
   this.order_dict[time_stamp]["selling_price_list"] = $.jStorage.get("price_list")
   this.order_dict[time_stamp]["grand_total"] = $("#grand_total").text()
   this.order_dict[time_stamp]["order_domain"] = $.jStorage.get("domain")
+  this.customer_address = get_customer_address()
+  this.customer_address = this.customer_address == "Customer Address Not Available" ? "" : this.customer_address
+  this.order_dict[time_stamp]["customer_full_address"] =  this.customer_address
   this.order_dict[time_stamp]["items"] = []
   var me = this
   $.each($("#cart_body").children(),function(index,value){
@@ -705,13 +756,13 @@ function init_for_so_po_creation(order_dict){
                   store_order_in_jstorage(order_dict)  
                 }
                 waitingDialog.hide();
-                show_message('Order Submitted Successfully')  
+                show_message('Order Submitted Successfully',"Success......")  
                 clear_accounting_data_after_submission() 
               },
               error: function(XMLHttpRequest, textStatus, errorThrown) {
                 store_order_in_jstorage(order_dict)
                 waitingDialog.hide();
-                show_message('Order Submitted Successfully')
+                show_message('Order Submitted Successfully',"Success......")
                 clear_accounting_data_after_submission() 
               }
             });
@@ -720,7 +771,7 @@ function init_for_so_po_creation(order_dict){
   {
     store_order_in_jstorage(order_dict)
     waitingDialog.hide();
-    show_message('Order Submitted Successfully')
+    show_message('Order Submitted Successfully',"Success.....")
     clear_accounting_data_after_submission() 
   }
 }
@@ -731,8 +782,9 @@ function store_order_in_jstorage(order_dict){
   $.jStorage.set("orders",item_list) 
 }
 
-function show_message(message){
+function show_message(message,title){
   $('#validate_model').modal("show")
+  $('#validate_model').find('.modal-title').text(title)
   $('#validate_model').find('.modal-body').text(message)
 }
 
@@ -768,7 +820,7 @@ function create_orders_from_jstorage_data(){
         init_for_so_po_creation_from_jstorage()
       }
 
-    },300000)
+    },600000)
 }
 
 function init_for_so_po_creation_from_jstorage(){
@@ -848,7 +900,7 @@ function start_auto_sync(){
           method: "GET",
           url: "http://"+$.jStorage.get("domain")+"/api/method/spos.spos.spos_api.get_pos_required_data?sales_user="+$.jStorage.get("email"),
           dataType: "json",
-          timeout:10000,
+          timeout:15000,
           success:function(result){
             set_pos_required_data_in_jstorage(result.message)
             init_for_required_data_rendering()
@@ -856,13 +908,13 @@ function start_auto_sync(){
           },
           error: function(XMLHttpRequest, textStatus, errorThrown){
             setTimeout(function () {waitingDialog.hide();},1000) 
-            show_message('Sync failed due to server is taking lot of time.Please try later.')
+            show_message('Sync failed due to server is taking lot of time.Please try later.',"Error ....")
             window.location = "../"
           }
     }); 
   }
   else if(connection_flag == false){
-       show_message('Sync failed due to unavailablity of internet connectivity')
+       show_message('Sync failed due to unavailablity of internet connectivity',"Error .....")
   }  
 }
 
@@ -882,6 +934,7 @@ function init_for_required_data_rendering(){
   vendor_list = get_vendor_list($.jStorage.get("vendor"))
   execute_common_data_rendering(vendor_list,"vendor")
   init_for_all_customer_rendering()
+  window.location.reload()
 }
 
 function get_vendor_list(vendor_dict){
@@ -912,4 +965,13 @@ function append_all_customer_to_ul(){
     cust_list.push(value.customer_id)
   })
   $('select[id=customer]').my_combobox(cust_list);
+}
+
+function show_message_for_selection_of_vendor(){
+    $('.item_thumnails').html("<div class='well' style='height:280px;margin-top:50px;margin-right:10px'><h1 style='font-size:50px'>Please Choose Vendor to display Items</h1></div>")  
+}
+
+function check_for_provided_keys(key_code){
+  key_obj = {"8":"eight","40":"fourty","38":"fourty","46":"fourty six","37":"thirty seven","39":"thirty nine"}
+  return key_code in key_obj
 }

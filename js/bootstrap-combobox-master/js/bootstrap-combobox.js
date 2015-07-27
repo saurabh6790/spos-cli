@@ -297,7 +297,6 @@
   }
 
   , triggerChange: function () {
-    console.log("trigger change")
     this.$source.trigger('change');
   }
   
@@ -340,6 +339,7 @@
 
    ,vendor_remove_span_trigger:function(){
       $('.item_thumnails').empty()
+      $('.item_thumnails').html("<div class='well' style='height:280px;margin-top:50px;margin-right:10px'><h1 style='font-size:50px'>Please Choose Vendor to display Items</h1></div>")  
       $("#cart_body").empty()
       $("[name=item][type=text]").val("")
       $("[name=sub_category][type=text]").val("")

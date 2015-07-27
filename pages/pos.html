@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" manifest="../mycache.manifest" type="text/cache-manifest">
-<!-- <html> -->
+<!-- <html lang="en" manifest="../mycache.manifest" type="text/cache-manifest"> -->
+ <html>
 	<head>
 		<title>SPOS</title>
 		<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
@@ -53,23 +53,26 @@
 		</nav>
 		<div class="container margin">
 			<div class="row">
-			<div class="col-md-4 col-sm-4 col-xs-6">
-				<select class="combobox" data-placeholder="Search Customer" id="customer" name="customer">
+			<div class="col-md-3 col-sm-3 col-xs-5" style="padding-right:0px">
+				<select class="combobox" data-placeholder="Customer" id="customer" name="customer">
 				  <option></option>
 				</select>
 			</div>
-			<div class="col-md-2 col-sm-2 col-xs-6">
-				<select class="combobox" data-placeholder="Search Vendor" id="vendor" name="vendor">
+			<div class="col-md-1 col-sm-1 col-xs-1 address_padding">
+				<button class="btn btn-primary" id="cust_address" title="Customer Address">A</button>
+			</div>
+			<div class="col-md-3 col-sm-3 col-xs-6">
+				<select class="combobox" data-placeholder="Vendor" id="vendor" name="vendor">
 				  <option></option>
 				</select>
 			</div>	
-			<div class="col-md-3 col-sm-3 col-xs-6">
-				<select class="combobox" data-placeholder="Search Sub-Category" id="sub_category" name="sub_category">
+			<div class="col-md-2 col-sm-2 col-xs-6">
+				<select class="combobox" data-placeholder="Sub-Category" id="sub_category" name="sub_category">
 				  <option></option>
 				</select>
 			</div>
 			<div class="col-md-3 col-sm-3 col-xs-6">
-				<select class="combobox" data-placeholder="Search Item" id="item" name ="item">
+				<select class="combobox" data-placeholder="Item" id="item" name ="item">
 				  <option></option>
 				</select>
 			</div>			
@@ -79,24 +82,24 @@
 
 		<div class="container margin">
 			<div class="row" style="border:1px solid rgb(218, 217, 217)">
-				<div class="col-md-6 col-sm-6 col-xs-12 col-color" style="text-align:center">
+				<div class="col-md-6 col-sm-6 col-xs-12 col-color" style="text-align:center;padding-right:0px">
 					<div class="pos-bill-toolbar row"><h5>Products</h5></div>
-					<div class="row item_thumnails margin" style="width:100%;max-height:400px;">
+					<div class="row item_thumnails margin">
 					</div>	
 				</div>	
 				<div class="col-md-6 col-sm-6 col-xs-12 col-color" style="text-align:center">
 					<div class="row pos-item-toolbar"><h5>Collection Area</h5></div>
-					<div class="col-color" style="max-height:400px">
+					<div class="col-color cart-body-margin" style="min-height:400px">
 						<div class="pos-bill margin">
 							<div class="item-cart">
 								<div class="row pos-bill-row pos-bill-header">
 									<div class="col-md-2 col-sm-2 col-xs-2"><h5>Item</h5></div>
 									<div class="col-md-4 col-sm-4 col-xs-4"><h5>Description</h5></div>
-									<div class="col-md-2 col-sm-2 col-xs-2"><h5>Quantity</h5></div>
+									<div class="col-md-2 col-sm-2 col-xs-2 cart-row-padding"><h5>Quantity</h5></div>
 									<div class="col-md-2 col-sm-2 col-xs-2"><h5>Price</h5></div>
-									<div class="col-md-2 col-sm-2 col-xs-2"></div>
+									<div class="col-md-2 col-sm-2 col-xs-2 cart-row-padding"></div>
 								</div>
-								<div class="items" id="cart_body" style="width:100%;height:270px;">
+								<div class="items" id="cart_body">
 								</div>	
 							</div>
 							<div class="totals-area margin" style="margin-right:10px">
@@ -113,8 +116,13 @@
 					</div>
 				</div>	
 			</div>
-			<div class="row" style="border:1px solid rgb(218, 217, 217)">
-				<div class="col-md-12 col-sm-12 col-xs-12 col-color" style="text-align:right" >
+			<div class="row col-color" style="border:1px solid rgb(218, 217, 217)">
+				<div class="col-md-6 col-sm-6 col-xs-6 ">
+					<p style="margin-top:10px">
+          				<span class="glyphicon glyphicon-copyright-mark"></span><b style="padding-left:8px">MobilAll Software Solutions<span id="year"></span> </b>
+        			</p>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-6" style="text-align:right" >
 					<button type="button" id="submit_order" class="btn btn-success" style="margin-top:10px;">
 					Submit</button>
 				</div>
@@ -140,7 +148,7 @@
           				</div>
           				<div class="form-group">
             				<label class="control-label">Quantity:</label>
-            				<input type="number"  id="modal_item_quantity" placeholder="Quantity" min="1" step=1 onkeypress="return isNumberKey(event)" class="form-control" autofocus required>
+            				<input type="number"  id="modal_item_quantity" placeholder="Quantity" min="1" step=1 onkeypress="return isNumberKey(event)" max="999999999999" class="form-control" autofocus required>
           				</div>
         			</form>
       			</div>

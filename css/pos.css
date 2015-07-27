@@ -12,8 +12,22 @@ body {
     background: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
 }
 
+#cust_address{
+   background-color: rgb(104, 145, 162);
+}
+
+#cust_address:hover,
+#cust_address:active,
+#cust_address:focus {
+    background-color: rgb(12, 97, 33);
+}
+
 .new_padding{
   padding-left: 4px
+}
+
+.address_padding{
+  padding-left: 0px;
 }                                                                                                                                                                                                                                                                                      
 
 .cart-row-padding{

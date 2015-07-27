@@ -1,5 +1,14 @@
 $(document).ready(function(){
-	bind_login_event()	
+	bind_login_event()
+	$("#forgot_password").click(function(){
+		var my_flag = check_if_domain_is_given()
+		if (my_flag == "success"){
+			 check_for_internet_connectivity() ? redirect_to_forget_password_link() : show_message("Internet Connection not available","Error ....")
+
+		}else{
+			show_message("Domain name is mandatory","Mandatory Field")
+		}
+	})
 })
 
 function bind_login_event(){
@@ -10,9 +19,9 @@ function bind_login_event(){
 		args.pwd = $("#inputPassword").val();
 		args.domain = $("#inputhDomain").val();
 
-		$('.btn-primary').prop("disabled", true);
+		 $('.btn-primary').prop("disabled", true);
 		if(!args.usr || !args.pwd || !args.domain)  {
-			alert("Domain, Login and Password required");
+			show_message("Domain name ,User name and Password are mandatory","Mandatory Field")
 			return false;
 		}
 		login(args)
@@ -38,15 +47,17 @@ function login(args){
 					window.location = "./pages/pos.html";
 				},
  				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					setTimeout(function () {waitingDialog.hide();},1000) 
-					alert("Can not load data")
+					// setTimeout(function () {waitingDialog.hide();},1000) 
+					show_message("Can not load data due to request failure","Error .....")
 					window.location = "../"
 				}
 			});		
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Invalid Login")
-			window.location = "../"
+			show_message("Invalid Login","Error .....")
+			$("#inputUser").val("");
+			$("#inputPassword").val("");
+			$("#inputhDomain").val("")			
 		}
 	}).always(function(){
 		$('.btn-primary').prop("disabled", false);
@@ -61,3 +72,34 @@ function set_pos_required_data_in_jstorage(pos_required_data){
   })
 }
 
+function check_if_domain_is_given(){
+	return $("#inputhDomain").val() ? "success" : "fail" 
+}
+
+
+function show_message(message,title){
+  $('#validate_model').modal("show")
+  $('#validate_model').find('.modal-title').text(title)
+  $('#validate_model').find('.modal-body').text(message)
+}
+
+
+function check_for_internet_connectivity(){
+ var flag
+ $.ajax({
+        type: "GET",
+        url: "{0}".replace("{0}",window.location.origin),
+        async: false,
+        success : function(data) {
+            flag = true
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown){
+            flag = false
+        } 
+    });
+ return flag
+}
+
+function redirect_to_forget_password_link(){
+	window.open("http://{0}/login#forgot".replace("{0}",$("#inputhDomain").val()))
+}

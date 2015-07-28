@@ -1,5 +1,8 @@
 $(document).ready(function(){
-	bind_login_event()
+	bind_login_event()	
+	var d = new Date
+    $("#year").text("  "+d.getFullYear())
+
 	$("#forgot_password").click(function(){
 		var my_flag = check_if_domain_is_given()
 		if (my_flag == "success"){

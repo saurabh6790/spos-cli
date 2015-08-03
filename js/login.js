@@ -104,5 +104,6 @@ function check_for_internet_connectivity(){
 }
 
 function redirect_to_forget_password_link(){
+	show_message("Please check adjacent tab","Forgot Password .....")
 	window.open("http://{0}/login#forgot".replace("{0}",$("#inputhDomain").val()))
 }

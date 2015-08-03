@@ -798,7 +798,7 @@ function validate_cart_body_empty(){
 
 function check_for_internet_connectivity(){
  var flag
- $.ajax({
+  $.ajax({
         type: "GET",
         url: "http://{0}/api/method/spos.spos.spos_api.check_for_connectivity".replace("{0}",$.jStorage.get("domain")),
         async: false,

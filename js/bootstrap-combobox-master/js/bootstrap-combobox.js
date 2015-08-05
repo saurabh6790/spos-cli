@@ -161,16 +161,15 @@
 
   , lookup: function (event) {
       this.query = this.$element.val();
-      return this.process(this.source);
+      return this.process(this.source,this.$element.attr("name"));
     }
 
-  , process: function (items) {
+  , process: function (items,name) {
       var that = this;
 
       items = $.grep(items, function (item) {
-        return that.matcher(item);
+        return that.matcher(item,name);
       })
-
       items = this.sorter(items);
 
       if (!items.length) {
@@ -187,7 +186,21 @@
       }
     }
 
-  , matcher: function (item) {
+  , matcher: function (item,name) {
+      if (name=='customer'){
+       $.each($.jStorage.get("customer"), function(index,e){ 
+          if (e.customer_id == item){
+            item += e.customer_name
+          }; 
+        });
+      }
+      if (name=='item'){
+       $.each($.jStorage.get("item"), function(index,e){ 
+          if (e.item_code == item){
+            item += e.item_description + e.barcode
+          }; 
+        });
+      }
       return ~item.toLowerCase().indexOf(this.query.toLowerCase());
     }
 

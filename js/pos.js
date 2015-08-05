@@ -56,7 +56,7 @@ $(document).ready(function(){
      $("#company").html("<b>{0}</b>".replace("{0}",$.jStorage.get("company")))
 
     $.each($.jStorage.get("customer"),function(index,value){
-    	$("body").find('select[id=customer]').append("<option>{0}</option>".replace("{0}",value.customer_id))
+    	$("body").find('select[id=customer]').append("<option description='{1}'>{0}</option>".replace("{0}",value.customer_id).replace("{1}",value.customer_name))
 
     })
 
@@ -239,7 +239,7 @@ $(document).ready(function(){
         $("#validate_model").modal("show")
          cust_address = get_customer_address()
         $("#validate_model").find(".modal-title").text("Customer Address")
-        $("#validate_model").find(".modal-body").html("<textarea class='form-control' disabled rows='8'>{0}</textarea>".replace("{0}",cust_address))  
+        $("#validate_model").find(".modal-body").html("<textarea class='form-control textarea-address' disabled rows='8'>{0}</textarea>".replace("{0}",cust_address))  
       }else{
         show_message("Please Select Customer First","Mandatory Field")
       }

@@ -1,5 +1,8 @@
 $(document).ready(function(){
-	bind_login_event()
+	bind_login_event()	
+	var d = new Date
+    $("#year").text("  "+d.getFullYear())
+
 	$("#forgot_password").click(function(){
 		var my_flag = check_if_domain_is_given()
 		if (my_flag == "success"){
@@ -101,5 +104,6 @@ function check_for_internet_connectivity(){
 }
 
 function redirect_to_forget_password_link(){
+	show_message("Please check adjacent tab","Forgot Password .....")
 	window.open("http://{0}/login#forgot".replace("{0}",$("#inputhDomain").val()))
 }

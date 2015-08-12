@@ -16,6 +16,10 @@ body {
    background-color: rgb(104, 145, 162);
 }
 
+.textarea-address{
+  font-weight: bold;
+}
+
 #cust_address:hover,
 #cust_address:active,
 #cust_address:focus {

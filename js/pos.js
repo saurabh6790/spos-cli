@@ -56,7 +56,7 @@ $(document).ready(function(){
      $("#company").html("<b>{0}</b>".replace("{0}",$.jStorage.get("company")))
 
     $.each($.jStorage.get("customer"),function(index,value){
-    	$("body").find('select[id=customer]').append("<option>{0}</option>".replace("{0}",value.customer_id))
+    	$("body").find('select[id=customer]').append("<option description='{1}'>{0}</option>".replace("{0}",value.customer_id).replace("{1}",value.customer_name))
 
     })
 
@@ -182,25 +182,38 @@ $(document).ready(function(){
 
 
     $("[name=item][type=text]").change(function(){
-        item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
-        if(item_dict.length){
-          render_thumbnails(item_dict)
-        }         
-        else if(!$(this).val()){
-           check_for_render_thumbnails()
+        return_flag = validate_for_vendor_selection_on_item_selection()
+        if (return_flag){
+          item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });
+          if(item_dict.length){
+            render_thumbnails(item_dict)
+          }
+          else if(!$(this).val()){
+             check_for_render_thumbnails()
+          }
         }
 
     })
 
+    $("[name=item][type=text]").scannerDetection(function(){
+        return_flag = validate_for_vendor_selection_on_item_selection()
+        if (return_flag){
+          item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
+          if(item_dict.length){
+            $(".thumbnail").trigger("click")
+          }     
+        }
+     })
+
       $("[name=item][type=text]").keypress(function(){
-         validate_for_vendor_selection_on_item_selection()
-         execute_item_search_span_trigger()
-         
+        return_flag = validate_for_vendor_selection_on_item_selection()
+        if (return_flag){
+          execute_item_search_span_trigger()  
+        }     
       })
  
       $("[name=sub_category][type=text]").keypress(function(){
-         execute_sub_category_search_span_trigger()
-         
+        execute_sub_category_search_span_trigger()         
       })
 
     $("#submit_order").click(function(){
@@ -239,7 +252,7 @@ $(document).ready(function(){
         $("#validate_model").modal("show")
          cust_address = get_customer_address()
         $("#validate_model").find(".modal-title").text("Customer Address")
-        $("#validate_model").find(".modal-body").html("<textarea class='form-control' disabled rows='8'>{0}</textarea>".replace("{0}",cust_address))  
+        $("#validate_model").find(".modal-body").html("<textarea class='form-control textarea-address' disabled rows='8'>{0}</textarea>".replace("{0}",cust_address))  
       }else{
         show_message("Please Select Customer First","Mandatory Field")
       }
@@ -693,8 +706,9 @@ function validate_for_vendor_selection_on_item_selection(){
 
     if(!$("[name=vendor][type=text]").val()){
         show_message('Please Select Vendor for Item Selection',"Mandatory Field")
+        return false
     }
-
+    return true
 }
 
 
@@ -798,7 +812,7 @@ function validate_cart_body_empty(){
 
 function check_for_internet_connectivity(){
  var flag
- $.ajax({
+  $.ajax({
         type: "GET",
         url: "http://{0}/api/method/spos.spos.spos_api.check_for_connectivity".replace("{0}",$.jStorage.get("domain")),
         async: false,

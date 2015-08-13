@@ -13,6 +13,7 @@ CACHE:
 /vendor/bootstrap/js/bootstrap.js
 /vendor/bootstrap/js/bootstrap.min.js
 /js/bootstrap-combobox-master/js/bootstrap-combobox.js
+/js/jquery/jquery.scannerdetection.js
 /vendor/images/brand.png
 /vendor/images/default-user.png
 /pages/pos.html

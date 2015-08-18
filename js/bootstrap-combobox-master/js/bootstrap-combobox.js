@@ -475,7 +475,16 @@
           }    
         default:
           this.clearTarget();
-          this.lookup();
+          if($("[name=item][type=text]").val().length > 2 && this.$source.attr("id") == 'item'){
+            this.lookup();
+          }
+          else if($("[name=customer][type=text]").val().length > 2 && this.$source.attr("id") == 'customer'){
+            this.lookup();
+          }
+          else if(this.$source.attr("id") != 'item'){
+            this.lookup();
+          }
+
       }
 
       e.stopPropagation();

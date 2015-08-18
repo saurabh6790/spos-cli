@@ -121,7 +121,7 @@ $(document).ready(function(){
                                 <div class="col-md-4 col-sm-4 col-xs-4"><h5>'+description+'</h5></div>\
                                 <div class="col-md-2 col-sm-2 col-xs-2 cart-row-padding"><input type="number" class="form-control" placeholder="Qty" value='+quantity+' id="quantity" min="1" max="999999999999" step=1 onkeypress="return isNumberKey(event)" style="width:100%"></div>\
                                 <div class="col-md-2 col-sm-2 col-xs-2"><h5>'+cost+'</h5></div>\
-                                <div class="col-md-1 col-sm-2 col-xs-2 cart-row-padding"><div class="cancel"><span class="glyphicon glyphicon-trash" style="padding-top:10px;"></span></div></div>\
+                                <div class="col-md-1 col-sm-2 col-xs-2 cart-row-padding"><div class="cancel"><button class="glyphicon glyphicon-trash btn btn-danger btn-sm" style="padding-top:10px;"></button></div></div>\
                                 </div>')
 
         }       

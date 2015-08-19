@@ -197,7 +197,7 @@
       if (name=='item'){
        $.each($.jStorage.get("item"), function(index,e){ 
           if (e.item_code == item){
-            item += e.item_description + e.barcode
+            item += e.barcode
           }; 
         });
       }
@@ -475,8 +475,14 @@
           }    
         default:
           this.clearTarget();
-          if($("[name=item][type=text]").val().length > 2 && this.$source.attr("id") == 'item'){
-            this.lookup();
+          if(this.$source.attr("id") == 'item'){
+              var return_flag = validate_for_vendor_selection_on_item_selection()
+                console.log("new code")
+                if (return_flag){
+                  execute_item_search_span_trigger()
+                  this.lookup();  
+                }     
+            
           }
           else if($("[name=customer][type=text]").val().length > 2 && this.$source.attr("id") == 'customer'){
             this.lookup();

@@ -195,21 +195,21 @@ $(document).ready(function(){
 
     })
 
-    $("[name=item][type=text]").scannerDetection(function(){
-        return_flag = validate_for_vendor_selection_on_item_selection()
-        if (return_flag){
-          item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
-          if(item_dict.length){
-            $(".thumbnail").trigger("click")
-          }     
-        }
-     })
+    // $("[name=item][type=text]").scannerDetection(function(){
+    //     return_flag = validate_for_vendor_selection_on_item_selection()
+    //     if (return_flag){
+    //       item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
+    //       if(item_dict.length){
+    //         $(".thumbnail").trigger("click")
+    //       }     
+    //     }
+    //  })
 
       $("[name=item][type=text]").keypress(function(){
-        return_flag = validate_for_vendor_selection_on_item_selection()
-        if (return_flag){
-          execute_item_search_span_trigger()  
-        }     
+        // return_flag = validate_for_vendor_selection_on_item_selection()
+        // if (return_flag){
+        //   execute_item_search_span_trigger()  
+        // }     
       })
  
       $("[name=sub_category][type=text]").keypress(function(){
@@ -524,6 +524,7 @@ function init_for_item_span_trigger(){
 }
 
 function execute_item_search_span_trigger(){
+    console.log("item search")
     if ($("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()){
       item_list = get_item_against_this_sub_category($("[name=sub_category][type=text]").val())
       init_for_sorted_item_rendering(item_list)
@@ -703,7 +704,7 @@ function validate_for_customer_and_vendor_selection(){
 
 
 function validate_for_vendor_selection_on_item_selection(){
-
+    console.log("vendor validate")
     if(!$("[name=vendor][type=text]").val()){
         show_message('Please Select Vendor for Item Selection',"Mandatory Field")
         return false

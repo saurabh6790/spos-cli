@@ -195,15 +195,15 @@ $(document).ready(function(){
 
     })
 
-    // $("[name=item][type=text]").scannerDetection(function(){
-    //     return_flag = validate_for_vendor_selection_on_item_selection()
-    //     if (return_flag){
-    //       item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
-    //       if(item_dict.length){
-    //         $(".thumbnail").trigger("click")
-    //       }     
-    //     }
-    //  })
+    $("[name=item][type=text]").scannerDetection(function(){
+        return_flag = validate_for_vendor_selection_on_item_selection()
+        if (return_flag){
+          item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
+          if(item_dict.length){
+            $(".thumbnail").trigger("click")
+          }     
+        }
+     })
 
       $("[name=item][type=text]").keypress(function(){
         // return_flag = validate_for_vendor_selection_on_item_selection()

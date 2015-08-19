@@ -191,13 +191,16 @@
        $.each($.jStorage.get("customer"), function(index,e){ 
           if (e.customer_id == item){
             item += e.customer_name
+            return false
           }; 
         });
       }
       if (name=='item'){
        $.each($.jStorage.get("item"), function(index,e){ 
           if (e.item_code == item){
-            item += e.barcode
+            item += e.barcode;
+            return false
+
           }; 
         });
       }
@@ -277,10 +280,10 @@
     if (!this.disabled) { 
       if (this.$container.hasClass('combobox-selected')) {
         $(this.$button).find("span:first").attr("check","deactive")
-         this.validate_before_remove_trigger()
-          // this.clearTarget();
-          // this.triggerChange();
-          // this.clearElement();          
+         //this.validate_before_remove_trigger()
+          this.clearTarget();
+          this.triggerChange();
+          this.clearElement();          
       } else {
          $(this.$button).find("span:first").attr("check","active")
         if (this.shown) {

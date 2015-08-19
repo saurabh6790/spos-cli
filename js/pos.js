@@ -527,19 +527,22 @@ function execute_item_search_span_trigger(){
     console.log("item search")
     if ($("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()){
       item_list = get_item_against_this_sub_category($("[name=sub_category][type=text]").val())
-      init_for_sorted_item_rendering(item_list)
+      return item_list
+      // init_for_sorted_item_rendering(item_list)
     }
     else if($("[name=sub_category][type=text]").val()  &&  $("[name=vendor][type=text]").val() ){
       item_list = get_item_against_this_sub_category_and_vendor($("[name=sub_category][type=text]").val() ,$("[name=vendor][type=text]").val())
-      init_for_sorted_item_rendering(item_list)
+      return item_list
+      // init_for_sorted_item_rendering(item_list)
     }
     else if(!$("[name=sub_category][type=text]").val() && !$("[name=vendor][type=text]").val() ){
-      init_for_all_item_rendering()
+      // init_for_all_item_rendering()
 
     }
     else if ($("[name=vendor][type=text]").val() && !$("[name=sub_category][type=text]").val() ){
       item_list = get_item_against_this_vendor($("[name=vendor][type=text]").val())
-      init_for_sorted_item_rendering(item_list)
+      return item_list
+      // init_for_sorted_item_rendering(item_list)
     }
 
 }

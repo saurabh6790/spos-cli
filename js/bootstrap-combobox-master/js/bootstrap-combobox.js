@@ -482,7 +482,10 @@
               var return_flag = validate_for_vendor_selection_on_item_selection()
                 console.log("new code")
                 if (return_flag){
-                  execute_item_search_span_trigger()
+                  var item_list = execute_item_search_span_trigger()
+                  var data  = this.$source.data('combobox')
+                  data.source = item_list
+                  data.options.items = data.source.length;
                   this.lookup();  
                 }     
             
@@ -559,6 +562,7 @@
      return this.each(function () {  
           var $this = $(this)
         , data = $this.data('combobox')
+        console.log($(this))
         if(data){
           // data.source = this.parse();
           data.source = item_list

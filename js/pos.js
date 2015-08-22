@@ -51,7 +51,7 @@ $(document).ready(function(){
     if ($.jStorage.get("login_count") == 1){
       waitingDialog.show('Welcome {0}.Please Wait while data is loading........'.replace("{0}",$.jStorage.get('user')), {dialogSize: 'md'});
     }
-    
+
     $("a.dropdown-toggle.user").prepend("<p style='display: inline-block;'>{0}</p>".replace("{0}",$.jStorage.get("user")))
      $("#company").html("<b>{0}</b>".replace("{0}",$.jStorage.get("company")))
 
@@ -79,10 +79,10 @@ $(document).ready(function(){
 
     if ($.jStorage.get("login_count") == 1){
        setTimeout(function () {waitingDialog.hide();},5000)
-       $.jStorage.set("login_count",2)  
+       $.jStorage.set("login_count",2)
     }
-   
-        
+
+
     $('#exampleModal').on('show.bs.modal', function (event) {
         var thumbnail = $(event.relatedTarget) // div that triggered the modal
         var item_code = thumbnail.data('item_code') // Extract info from data-* attributes
@@ -92,11 +92,11 @@ $(document).ready(function(){
         modal.find('#modal_item_code').val(item_code)
         modal.find('#modal_item_description').val(description)
         modal.find('#modal_item_quantity').val(qty)
-        modal.find('input:last').focus()  
+        modal.find('input:last').focus()
         modal.find('#add_to_cart').attr("item_code",item_code)
         modal.find('#add_to_cart').attr("description",description)
         cost = $.grep($.jStorage.get("item"), function(e){ return e.item_code == item_code; })
-        modal.find('#add_to_cart').attr("cost",cost[0].cost)  
+        modal.find('#add_to_cart').attr("cost",cost[0].cost)
     })
 
     $('#exampleModal').on('shown.bs.modal', function (event) {
@@ -111,7 +111,7 @@ $(document).ready(function(){
         item_code = $(this).attr("item_code")
         description = $(this).attr("description")
         cost = $(this).attr("cost")
-        existing_item = check_if_item_exists_in_cart(item_code)  
+        existing_item = check_if_item_exists_in_cart(item_code)
         if (existing_item.length){
            $("#cart_body").find("[item_code='{0}']".replace("{0}",String(item_code))).find("#quantity").val(quantity)
            $("#cart_body").find("[item_code='{0}']".replace("{0}",String(item_code))).attr("quantity",quantity)
@@ -124,8 +124,8 @@ $(document).ready(function(){
                                 <div class="col-md-1 col-sm-2 col-xs-2 cart-row-padding"><div class="cancel"><button class="glyphicon glyphicon-trash btn btn-danger btn-sm" style="padding-top:10px;"></button></div></div>\
                                 </div>')
 
-        }       
-       
+        }
+
        $('#exampleModal').modal('hide')
         calculate_grand_total()
     })
@@ -137,27 +137,27 @@ $(document).ready(function(){
     })
 
     var max_chars =12;
-    $(document).on('input',"#quantity",function(e) { 
-      if ($(this).val().length >= 12) { 
+    $(document).on('input',"#quantity",function(e) {
+      if ($(this).val().length >= 12) {
           $(this).val($(this).val().substr(0, max_chars));
        }
-       $(this).parent().parent().attr("quantity",$(this).val()) 
-       calculate_grand_total()  
-            
+       $(this).parent().parent().attr("quantity",$(this).val())
+       calculate_grand_total()
+
     });
 
      $(document).on('keydown',"#quantity",function(e) {
         if ( ( e.keyCode== 48 && !$(this).val() ) ||  ( $(this).val() >= 999999999999 && !check_for_provided_keys(e.keyCode)  )){
           e.preventDefault();
         }
-            
+
     });
 
 
     $(document).on('keydown',"#modal_item_quantity",function(e) {
       if ( (e.keyCode== 48 && !$(this).val() ) || ( $(this).val() >= 999999999999 && !check_for_provided_keys(e.keyCode)  )  ){
             e.preventDefault();
-        } 
+        }
     });
 
    $("[name=vendor][type=text]").change(function(){
@@ -198,28 +198,28 @@ $(document).ready(function(){
     $("[name=item][type=text]").scannerDetection(function(){
         return_flag = validate_for_vendor_selection_on_item_selection()
         if (return_flag){
-          item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });        
+          item_dict = $.grep($.jStorage.get("item"), function(e){ return e.item_code == $("[name=item][type=text]").val(); });
           if(item_dict.length){
             $(".thumbnail").trigger("click")
-          }     
+          }
         }
      })
 
       // $("[name=item][type=text]").keypress(function(){
       //   // return_flag = validate_for_vendor_selection_on_item_selection()
       //   // if (return_flag){
-      //   //   execute_item_search_span_trigger()  
-      //   // }     
+      //   //   execute_item_search_span_trigger()
+      //   // }
       // })
- 
+
       $("[name=sub_category][type=text]").keypress(function(){
-        execute_sub_category_search_span_trigger()         
+        execute_sub_category_search_span_trigger()
       })
 
     $("#submit_order").click(function(){
         return_value = validate_for_customer_and_vendor_selection()
         validate_cart_body_empty()
-        if (return_value == false && $("#cart_body").children().length !=0){          
+        if (return_value == false && $("#cart_body").children().length !=0){
           create_and_submit_order_data()
         }
     })
@@ -252,13 +252,13 @@ $(document).ready(function(){
         $("#validate_model").modal("show")
          cust_address = get_customer_address()
         $("#validate_model").find(".modal-title").text("Customer Address")
-        $("#validate_model").find(".modal-body").html("<textarea class='form-control textarea-address' disabled rows='8'>{0}</textarea>".replace("{0}",cust_address))  
+        $("#validate_model").find(".modal-body").html("<textarea class='form-control textarea-address' disabled rows='8'>{0}</textarea>".replace("{0}",cust_address))
       }else{
         show_message("Please Select Customer First","Mandatory Field")
       }
-      
+
     })
-   
+
 
     // $("#cancel_auto_sync").click(function(){
     //   $("#auto_sync_model").modal("hide")
@@ -270,7 +270,7 @@ $(document).ready(function(){
 
     $("#modal_item_quantity").keyup(function(args){
       if ( !check_for_provided_keys(args.keyCode) ){
-        if ($(this).val().length >= 12) { 
+        if ($(this).val().length >= 12) {
            $(this).val($(this).val().substr(0, max_chars));
         }
       }
@@ -283,7 +283,7 @@ $(document).ready(function(){
     $("#brand").click(function(){
       window.location.reload()
     })
-    
+
     var d = new Date
     $("#year").text("  "+d.getFullYear())
 
@@ -351,7 +351,7 @@ function append_data_list_to_ul(data_list,data_name){
       strong_tag = create_custom_ul_for_data(value)
        $("body").find('ul[id={0}]'.replace("{0}",data_name)).append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value))
 
-  }) 
+  })
 
 }
 
@@ -385,7 +385,7 @@ function append_all_items_to_select(){
 }
 
 function append_all_items_to_ul(){
-     item_list = []   
+     item_list = []
      $.each($.jStorage.get("item"),function(index,value){
         strong_tag = create_custom_ul(value.item_code,value.item_description)
         $("body").find('ul[id=item]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
@@ -395,7 +395,7 @@ function append_all_items_to_ul(){
 }
 
 function append_item_list_to_ul(item_list){
-    item_dict = get_item_dict_from_item_list(item_list)    
+    item_dict = get_item_dict_from_item_list(item_list)
     $.each(item_dict,function(index,value){
         strong_tag = create_custom_ul(value.item_code,value.item_description)
          $("body").find('ul[id=item]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.item_code))
@@ -407,10 +407,10 @@ function append_item_list_to_ul(item_list){
 function get_item_dict_from_item_list(item_list){
   item_dict = []
   $.each(item_list,function(index,value){
-      $.grep($.jStorage.get("item"), function(e){ 
+      $.grep($.jStorage.get("item"), function(e){
           if (e.item_code == value){
               return item_dict.push(e)
-          } 
+          }
       });
   })
   return item_dict
@@ -423,7 +423,7 @@ function create_custom_ul(value_name,value_desc){
     })
     strong_tag = strong_tag + "<br><p style='font-size:12px'>"
     $.each(value_desc.split(''),function(index,value){
-        strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value) 
+        strong_tag = strong_tag + '<strong></strong>{0}'.replace("{0}",value)
     })
 
     return strong_tag + "</p>"
@@ -441,7 +441,7 @@ function get_qty_of_existing_item(item_code){
     var quantity = 1
     existing_row = check_if_item_exists_in_cart(item_code)
     if (existing_row.length) {
-        quantity = $(existing_row).attr("quantity") 
+        quantity = $(existing_row).attr("quantity")
     }
    return quantity
 }
@@ -453,7 +453,7 @@ function check_if_item_exists_in_cart(item_code){
 }
 
 function get_item_against_this_vendor(vendor){
-    vendor_dict = $.grep($.jStorage.get("vendor"), function(e){ return e.vendor_id == vendor; }); 
+    vendor_dict = $.grep($.jStorage.get("vendor"), function(e){ return e.vendor_id == vendor; });
     if (parseInt(Object.keys(vendor_dict).length)){
          return vendor_dict[0].item_list
     }
@@ -466,7 +466,7 @@ function get_item_against_this_sub_category(sub_category){
          $.each(item_dict,function(index,value){
             item_list.push(value.item_code)
          })
-    } 
+    }
     return item_list
 }
 
@@ -479,15 +479,15 @@ function get_item_against_this_sub_category_and_vendor(sub_category,vendor){
 function check_if_item_exists_against_this_subcategory(sub_category,item_list){
     sorted_item_list = []
     $.each(item_list,function(index,value){
-        $.grep($.jStorage.get("item"), function(e){ 
+        $.grep($.jStorage.get("item"), function(e){
             if (e.item_group == sub_category && e.item_code == value){
-                        
-                return sorted_item_list.push(e.item_code); 
+
+                return sorted_item_list.push(e.item_code);
             }
 
-        }); 
+        });
 
-    })    
+    })
 
     return sorted_item_list
 }
@@ -497,10 +497,10 @@ function check_if_item_exists_against_this_subcategory(sub_category,item_list){
 function get_sub_category_against_item_list(item_list){
   sub_category_list = []
     $.each(item_list,function(index,value){
-        $.grep($.jStorage.get("item"), function(e){ 
+        $.grep($.jStorage.get("item"), function(e){
             if (e.item_code == value){
                 return sub_category_list.push(e.item_group)
-            } 
+            }
         });
     })
     return sub_category_list
@@ -513,11 +513,11 @@ function init_for_item_span_trigger(){
         if (  $("[name=item][type=text]").siblings("span").find("span:first").attr("check") == "active" ){
               validate_for_vendor_selection_on_item_selection()
               execute_item_search_span_trigger()
-        
+
         }else{
             execute_item_remove_span_trigger()
         }
-               
+
 
    });
 
@@ -553,8 +553,8 @@ function execute_item_search_span_trigger(){
 }
 
 
-function execute_item_remove_span_trigger(){   
-  check_for_render_thumbnails()   
+function execute_item_remove_span_trigger(){
+  check_for_render_thumbnails()
 }
 
 
@@ -562,22 +562,22 @@ function execute_item_remove_span_trigger(){
 function init_for_sub_category_span_trigger(){
 
     $("[name=sub_category][type=text]").siblings("span").on("click","",function(){
-       
+
         if (  $("[name=sub_category][type=text]").siblings("span").find("span:first").attr("check") != "active" ){
               execute_sub_category_remove_span_trigger()
-        
+
         }
         else if ( $("[name=sub_category][type=text]").siblings("span").find("span:first").attr("check") == "active"){
               execute_sub_category_search_span_trigger()
           }
-    });   
+    });
 }
 
 
 
 
-function execute_sub_category_remove_span_trigger(){   
-    check_for_render_thumbnails()   
+function execute_sub_category_remove_span_trigger(){
+    check_for_render_thumbnails()
 
 }
 
@@ -593,7 +593,7 @@ function execute_sub_category_search_span_trigger(){
       sub_category_list = $.jStorage.get("item_group")
        execute_common_data_rendering(sub_category_list,"sub_category")
 
-    }   
+    }
 
 
 }
@@ -603,9 +603,9 @@ function execute_sub_category_search_span_trigger(){
 //     $("[name=vendor][type=text]").siblings("span").on("click","",function(){
 //        if (  $("[name=vendor][type=text]").siblings("span").find("span:first").attr("check") != "active" ){
 //               show_message_for_selection_of_vendor()
-        
+
 //         }
-//     }); 
+//     });
 
 // }
 
@@ -613,16 +613,16 @@ function execute_sub_category_search_span_trigger(){
 // function init_for_customer_span_trigger(){
 //     $("[name=customer][type=text]").siblings("span").on("click","",function(){
 //        if (  $("[name=customer][type=text]").siblings("span").find("span:first").attr("check") != "active" ){
-              
-             
-        
+
+
+
 //         }
-//     }); 
+//     });
 
 // }
 
 function execute_customer_remove_span_trigger(){
-      $("#cart_body").empty() 
+      $("#cart_body").empty()
 }
 
 function execute_vendor_remove_span_trigger(){
@@ -632,7 +632,7 @@ function execute_vendor_remove_span_trigger(){
     $("[name=sub_category][type=text]").val("")
     $("[name=item][type=hidden]").parent().removeClass("combobox-selected")
     $("[name=sub_category][type=hidden]").parent().removeClass("combobox-selected")
-    show_message_for_selection_of_vendor()   
+    show_message_for_selection_of_vendor()
 
 }
 
@@ -658,7 +658,7 @@ function check_for_render_thumbnails(){
         render_thumbnails(item_dict)
     }
     else if (!$("[name=sub_category][type=text]").val() &&  !$("[name=vendor][type=text]").val()  && !$("[name=item][type=text]").val()){
-           show_message_for_selection_of_vendor()        
+           show_message_for_selection_of_vendor()
 
     }
 
@@ -723,7 +723,7 @@ function validate_for_vendor_selection_on_item_selection(){
 
 function create_and_submit_order_data(){
    call_block_ui()
-   order_dict = create_order_data() 
+   order_dict = create_order_data()
 
   if ($.jStorage.get("orders") === null){
     $.jStorage.set("orders",[])
@@ -740,7 +740,7 @@ function create_order_data(){
   time_stamp = Date.now()
   this.order_dict[time_stamp] = {}
   this.order_dict[time_stamp]["customer"] = $("[name=customer][type=text]").val()
-  this.order_dict[time_stamp]["supplier"] = $("[name=vendor][type=text]").val() 
+  this.order_dict[time_stamp]["supplier"] = $("[name=vendor][type=text]").val()
   this.order_dict[time_stamp]["selling_price_list"] = $.jStorage.get("price_list")
   this.order_dict[time_stamp]["grand_total"] = $("#grand_total").text()
   this.order_dict[time_stamp]["order_domain"] = $.jStorage.get("domain")
@@ -776,17 +776,17 @@ function init_for_so_po_creation(order_dict){
               dataType: "json",
               success:function(r){
                 if (r.message == 'fail'){
-                  store_order_in_jstorage(order_dict)  
+                  store_order_in_jstorage(order_dict)
                 }
                 waitingDialog.hide();
-                show_message('Order Submitted Successfully',"Success......")  
-                clear_accounting_data_after_submission() 
+                show_message('Order Submitted Successfully',"Success......")
+                clear_accounting_data_after_submission()
               },
               error: function(XMLHttpRequest, textStatus, errorThrown) {
                 store_order_in_jstorage(order_dict)
                 waitingDialog.hide();
                 show_message('Order Submitted Successfully',"Success......")
-                clear_accounting_data_after_submission() 
+                clear_accounting_data_after_submission()
               }
             });
   }
@@ -795,14 +795,14 @@ function init_for_so_po_creation(order_dict){
     store_order_in_jstorage(order_dict)
     waitingDialog.hide();
     show_message('Order Submitted Successfully',"Success.....")
-    clear_accounting_data_after_submission() 
+    clear_accounting_data_after_submission()
   }
 }
 
 function store_order_in_jstorage(order_dict){
   item_list = $.jStorage.get("orders")
   item_list.push(order_dict)
-  $.jStorage.set("orders",item_list) 
+  $.jStorage.set("orders",item_list)
 }
 
 function show_message(message,title){
@@ -814,9 +814,9 @@ function show_message(message,title){
 function validate_cart_body_empty(){
   if (!$("#cart_body").children().length){
       $('#validate_model').modal("show")
-      $('#validate_model').find('.modal-body').text('Empty Cart Area Found') 
+      $('#validate_model').find('.modal-body').text('Empty Cart Area Found')
   }
-  
+
 }
 
 function check_for_internet_connectivity(){
@@ -830,7 +830,7 @@ function check_for_internet_connectivity(){
         },
         error : function(XMLHttpRequest, textStatus, errorThrown){
             flag = false
-        } 
+        }
     });
 
  return flag
@@ -851,17 +851,17 @@ function init_for_so_po_creation_from_jstorage(){
      try {
           if (value[Object.keys(value)[0]].order_domain == $.jStorage.get("domain")){
               connection_flag = check_for_internet_connectivity()
-              if (connection_flag == true){          
+              if (connection_flag == true){
                   execute_so_po_creation_from_jstorage(value)
               }
               else if (connection_flag == false){
                   return false
               }
-            }  
+            }
         }
      catch (err){
-     }   
-    
+     }
+
     })
 }
 
@@ -878,9 +878,9 @@ function execute_so_po_creation_from_jstorage(order_dict){
           dataType: "json",
           success:function(r){
             if (r.message == 'success'){
-              remove_order_from_jstorage(order_dict)  
+              remove_order_from_jstorage(order_dict)
             }
-            
+
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) {
           }
@@ -895,7 +895,7 @@ function remove_order_from_jstorage(order_dict){
             orders_list.splice(index, 1);
             $.jStorage.set("orders",orders_list)
             return false
-        } 
+        }
 
     });
 }
@@ -907,10 +907,10 @@ function call_block_ui(){
 
 
 function clear_accounting_data_after_submission(){
-  execute_vendor_remove_span_trigger()
-  $("[name=vendor][type=hidden]").parent().removeClass("combobox-selected")
-  $("[name=vendor][type=text]").val("")
-
+  execute_vendor_remove_span_trigger();
+  $("[name=vendor][type=hidden]").parent().removeClass("combobox-selected");
+  $("[name=vendor][type=text]").val("");
+  calculate_grand_total();
 }
 
 
@@ -927,18 +927,18 @@ function start_auto_sync(){
           success:function(result){
             set_pos_required_data_in_jstorage(result.message)
             init_for_required_data_rendering()
-            setTimeout(function () {waitingDialog.hide();},1000) 
+            setTimeout(function () {waitingDialog.hide();},1000)
           },
           error: function(XMLHttpRequest, textStatus, errorThrown){
-            setTimeout(function () {waitingDialog.hide();},1000) 
+            setTimeout(function () {waitingDialog.hide();},1000)
             show_message('Sync failed due to server is taking lot of time.Please try later.',"Error ....")
             window.location = "../"
           }
-    }); 
+    });
   }
   else if(connection_flag == false){
        show_message('Sync failed due to unavailablity of internet connectivity',"Error .....")
-  }  
+  }
 }
 
 
@@ -946,7 +946,7 @@ function start_auto_sync(){
 function set_pos_required_data_in_jstorage(pos_required_data){
   var key_list = ["customer","vendor","item_group","item","price_list","company"]
   $.each(key_list,function(index,value){
-     $.jStorage.set(value,pos_required_data[value])    
+     $.jStorage.set(value,pos_required_data[value])
   })
 }
 
@@ -981,7 +981,7 @@ function append_all_customer_to_select(){
 }
 
 function append_all_customer_to_ul(){
-  cust_list = []   
+  cust_list = []
   $.each($.jStorage.get("customer"),function(index,value){
     strong_tag = create_custom_ul(value.customer_id,value.customer_name)
     $("body").find('ul[id=customer]').append("<li  data-value='{1}'><a href=#>{0}</a></li>".replace("{0}",strong_tag).replace("{1}",value.customer_id))
@@ -991,7 +991,7 @@ function append_all_customer_to_ul(){
 }
 
 function show_message_for_selection_of_vendor(){
-    $('.item_thumnails').html("<div class='well' style='height:280px;margin-top:50px;margin-right:10px'><h1 style='font-size:50px'>Please Choose Vendor to display Items</h1></div>")  
+    $('.item_thumnails').html("<div class='well' style='height:280px;margin-top:50px;margin-right:10px'><h1 style='font-size:50px'>Please Choose Vendor to display Items</h1></div>")
 }
 
 function check_for_provided_keys(key_code){
